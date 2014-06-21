@@ -22,7 +22,7 @@ namespace DentistApp.UI.ViewModels
         public ICommand Save { get { return new DelegateCommand(() => { NoteController.SaveNote(new Note { NoteId = this.NoteId, Description = this.Description }); }); } }
 
         private Note SelectedNote { get; set; }
-        public ICommand Delete { get { return new DelegateCommand(() => { NoteController.Delete(SelectedNote); }); } }
+        public ICommand Delete { get { return new DelegateCommand(() => {if (ShouldDelete())return; NoteController.Delete(SelectedNote); }); } }
         public NoteViewModel(Note n)
         {
             SelectedNote = n;

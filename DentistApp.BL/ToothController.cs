@@ -55,13 +55,13 @@ namespace DentistApp.BL
         public List<Note> GetNotesOfToothAndPatient(int toothId, int patientId)
         {
             var notes = new List<Note>();
-            var notesOfTeeth = NoteRepository.GetAll(n=>n.Tooth, n=>n.Patient, n=>n.Operation, n=>n.Appointment).Where((n=>n.Patient.PatientId==patientId)).ToList<Note>();
+            var notesOfTeeth = NoteRepository.GetAll().Where((n=>n.PatientId==patientId)).ToList<Note>();
 
             foreach (Note n in notesOfTeeth)
             {
-                if (n.Tooth != null)
+                if (n.ToothId != null)
                 {
-                    if (n.Tooth.ToothId == toothId)
+                    if (n.ToothId == toothId)
                     {
                         notes.Add(n);
                     }

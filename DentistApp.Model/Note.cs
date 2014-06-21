@@ -10,10 +10,10 @@ namespace DentistApp.DAL
     {
         public int NoteId { get; set; }
         public string Description { get; set; }
-        public Patient Patient { get; set; }
-        public Operation Operation { get; set; }
-        public Tooth Tooth { get; set; }
-        public Appointment Appointment { get; set; }
+        public int PatientId { get; set; }
+        public int OperationId { get; set; }
+        public int ToothId { get; set; }
+        public int AppointmentId { get; set; }
         public Note()
             : base()
         {

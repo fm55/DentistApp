@@ -145,7 +145,7 @@ namespace DentistApp.UI.ViewModels
             {
                 Description = "Double click to edit",
                 EntityState = EntityState.Added,
-                Patient = SelectedPatient
+                PatientId = SelectedPatient.PatientId
             };
             NoteController.SaveNote(n);
             SelectedPatient = PatientController.Get(SelectedPatient.PatientId);
@@ -158,6 +158,7 @@ namespace DentistApp.UI.ViewModels
         
         private void deletePatient()
         {
+            if (ShouldDelete()) return;
             Patient p = SelectedPatient;
             //this.NotificationToPatientDelete.Raised += new EventHandler<GenericInteractionRequestEventArgs<Patient>>(NotificationToPatient_Raised);
             //this.NotificationToPatientDelete.Raise(p, this.DeletePatientCallback, () => { });
@@ -228,6 +229,7 @@ namespace DentistApp.UI.ViewModels
             {
                 return new DentistApp.UI.Commands.DelegateCommand((object o) =>
                 {
+                    if (ShouldDelete()) return;
                     AppointmentController.Delete(AppointmentController.List((int)o).First());
                     var apps = AppointmentController.List();
                     Appointments = new ObservableCollection<Appointment>(apps.OrderByDescending(d => d.StartTime));

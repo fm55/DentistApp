@@ -31,7 +31,7 @@ namespace DentistApp.UI.ViewModels
                 {
                     SelectedTooth.EntityState = EntityState.Unchanged;
                     SelectedPatient.EntityState = EntityState.Unchanged;
-                    NoteController.SaveNote(new Note { Description = "Click to edit", Tooth = SelectedTooth, Patient = SelectedPatient });
+                    NoteController.SaveNote(new Note { Description = "Click to edit", ToothId = SelectedTooth.ToothId, PatientId = SelectedPatient.PatientId });
                     Notes = new ObservableCollection<NoteViewModel>(ToothController.GetNotesOfToothAndPatient(SelectedTooth.ToothId, SelectedPatient.PatientId).Select(i => new NoteViewModel(i)));
                     Update();
                 });
@@ -75,6 +75,7 @@ namespace DentistApp.UI.ViewModels
             {
                 return new DentistApp.UI.Commands.DelegateCommand((object o) =>
                 {
+                    if (ShouldDelete()) return;
                     AppointmentsController.Delete(AppointmentsController.List((int)o).First());
                     var apps = AppointmentsController.List();
                     Appointments = new ObservableCollection<Appointment>(apps.OrderByDescending(d => d.StartTime));

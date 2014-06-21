@@ -6,7 +6,7 @@
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{765709C7-F9B9-42EE-BEA0-377D3F042E4A}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DentistApp.BL</RootNamespace>
     <AssemblyName>DentistApp.BL</AssemblyName>

@@ -33,6 +33,8 @@ namespace DentistApp.UI.ViewModels
             {
                 return new DelegateCommand((object o) =>
                 {
+                    if (!ShouldDelete()) return;
+
                     AppointmentsController.Delete(AppointmentsController.List((int)o).First());
                     var apps = AppointmentsController.List();
                     Appointments = new ObservableCollection<Appointment>(apps.OrderByDescending(d => d.StartTime));
