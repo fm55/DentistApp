@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="CopyOutput">
+<Target Name="EchoGreeting">
+	<Exec Command="echo Hello from MSBuild" />
+</Target>
+<ItemGroup>
+         <BuildArtifactsDir Include="BuildArtifacts\" />
+		    <SolutionFile Include="DentistApp.sln"/>
+  <ProjectsToBuild Include="**\DentistApp*csproj"/>
+  <NUnitConsole Include="C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\mstest.exe" />
+  <UnitTestsDLL Include="BuildArtifacts\DentistApp.Test.dll" />
+  <TestResultsPath Include="\BuildArtifacts\TestResults.xml" />
+  <TestProjectFile Include="..\DentistApp\DentistApp.Test.csproj"/>
+  
+</ItemGroup>
+  
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <BuildPlatform Condition=" '$(BuildPlatform)' == '' ">Any CPU</BuildPlatform>
+	<ProjectName>DentistApp.MvcApplication</ProjectName>
+        <ProjectFile>$(ProjectName)\$(ProjectName).csproj</ProjectFile>
+  </PropertyGroup>
+
+  <Target Name="Compile" DependsOnTargets="Init">
+    <MSBuild Projects="@(SolutionFile)" Targets="Build"
+             Properties="OutDir=%(BuildArtifactsDir.FullPath);Platform=$(BuildPlatform)" />
+
+  </Target>
+  <Target Name="CopyOutput">
+        <ItemGroup>
+            <PackagedFiles Include="$(ProjectName)\obj\$(Configuration)\Package\PackageTmp\**\*.*"/>
+        </ItemGroup>
+        <Copy SourceFiles="@(PackagedFiles)" DestinationFiles="@(PackagedFiles->'C:\temp\$(ProjectName)\$(Configuration)\%(RecursiveDir)%(Filename)%(Extension)')"/>
+    </Target>
+   <Target Name="Init" DependsOnTargets="Clean">
+         <MakeDir Directories="@(BuildArtifactsDir)" />
+       </Target>
+
+       <Target Name="Clean">
+         <RemoveDir Directories="@(BuildArtifactsDir)" />
+       </Target>
+  
+  <!--<Target Name="RunUnitTests" DependsOnTargets="Compile">
+    <Exec Command='"@(NUnitConsole)" /TestContainer:@(UnitTestsDLL)' />
+  </Target>!-->
+
+       </Project>

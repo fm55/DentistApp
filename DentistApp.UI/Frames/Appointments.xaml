@@ -1,0 +1,48 @@
+﻿<Page x:Class="DentistApp.UI.Frames.Appointments"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      mc:Ignorable="d" 
+      d:DesignHeight="496" d:DesignWidth="967"
+      xmlns:dg="http://schemas.microsoft.com/wpf/2008/toolkit"
+      xmlns:appointments="clr-namespace:DentistApp.UI.Converters"
+      xmlns:appointment="clr-namespace:DentistApp.UI.UserControls"
+	Title="Appointments">
+    <Page.Resources>
+        <appointments:OperationsToListConverter x:Key="OperationsConverter"/>
+        <DataTemplate x:Key="AppointmentItemTemplate">
+            
+                <appointment:AppointmentUserControl Margin="15"
+ HorizontalAlignment="Left" VerticalAlignment="Top"></appointment:AppointmentUserControl>
+            
+        </DataTemplate>
+        <ItemsPanelTemplate x:Key="AppointmentItemsPanelTemplate">
+            <UniformGrid Columns="2" Margin="0,0,0,0"/>
+        </ItemsPanelTemplate>
+
+        <DataTemplate x:Key="NoteItemTemplate">
+            <StackPanel>
+                <appointment:NoteUserControl Margin="15" 
+ HorizontalAlignment="Left" VerticalAlignment="Top"></appointment:NoteUserControl>
+            </StackPanel>
+        </DataTemplate>
+        <ItemsPanelTemplate x:Key="NoteItemsPanelTemplate">
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,0"/>
+        </ItemsPanelTemplate>
+    </Page.Resources>
+    <Grid>
+        <StackPanel Orientation="Vertical" Width="Auto"
+              HorizontalAlignment="Left"   >
+            <Button Command="{Binding CreateAppointment}" Content="Create Appointment"/>
+            <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Visible">
+                
+                <ItemsControl x:Name="stackPatientAppointments" ItemsSource="{Binding Path=Appointments}" HorizontalAlignment="Left" Margin="0,8,0,0" VerticalAlignment="Top"
+                          ItemTemplate="{StaticResource AppointmentItemTemplate}"                 
+                          ItemsPanel="{StaticResource AppointmentItemsPanelTemplate}"/>
+            </ScrollViewer>
+        </StackPanel>
+
+
+    </Grid>
+</Page>

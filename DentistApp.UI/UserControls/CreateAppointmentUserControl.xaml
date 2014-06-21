@@ -1,0 +1,93 @@
+﻿<UserControl x:Class="DentistApp.UI.UserControls.CreateAppointmentUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:appointment="clr-namespace:DentistApp.UI.UserControls"
+             mc:Ignorable="d" 
+             xmlns:converters="clr-namespace:DentistApp.UI.Converters"
+             xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:controls="clr-namespace:DentistApp.UI.CustomControls"
+             xmlns:appointmentViewModel="clr-namespace:DentistApp.UI.ViewModels">
+    <UserControl.Resources>
+        <converters:OperationsToListConverter x:Key="OperationsConverter"/>
+        <converters:DateConverter x:Key="DateConverter"/>
+        <DataTemplate x:Key="NoteItemTemplate">
+        <StackPanel>
+            <appointment:NoteUserControl Margin="15" 
+ HorizontalAlignment="Left" VerticalAlignment="Top"></appointment:NoteUserControl>
+        </StackPanel>
+    </DataTemplate>
+    <ItemsPanelTemplate x:Key="NoteItemsPanelTemplate">
+        <StackPanel Orientation="Horizontal"/>
+    </ItemsPanelTemplate>
+
+    </UserControl.Resources>
+
+        <Border x:Name="OuterBorder" Background="#FFDBEDF5" CornerRadius="1" Height="Auto"  Width="689" BorderBrush="#FF060000">
+            <DockPanel>
+            <Button DockPanel.Dock="Top" Content="Create" Command="{Binding CreateAppointment}"/>
+            <Label DockPanel.Dock="Top" Content="{Binding Path=StartTime, Converter={StaticResource DateConverter}}" FontFamily="Bookman Old Style" FontSize="32" FontWeight="Bold" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            <ScrollViewer DockPanel.Dock="Top">
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <toolkit:DateTimePicker Value="{Binding Path=NewAppointment.StartTime}" FontFamily="Calibri" Width="320" />
+                        <Label Content=" To " FontFamily="Calibri" />
+                        <toolkit:DateTimePicker Value="{Binding Path=NewAppointment.EndTime}" FontFamily="Calibri" Width="320"/>
+                    </StackPanel>
+                    <TextBox Text="{Binding Path=NewAppointment.Description}" FontFamily="Calibri" Height="74"  VerticalAlignment="Top" FontStyle="Italic" />
+
+                </StackPanel>
+            </ScrollViewer>
+            <Expander DockPanel.Dock="Top"  Header="Details" VerticalAlignment="Top">
+                <WrapPanel Orientation="Horizontal" Width="700">
+                    <ListBox ItemsSource="{Binding Operations}" SelectionMode="Multiple" Width="220">
+
+                        <ListBox.Resources>
+                            <Style TargetType="{x:Type ListBoxItem}">
+                                <Setter Property="IsSelected" Value="{Binding Path=IsSelected, Mode=TwoWay}"/>
+                            </Style>
+
+                            <DataTemplate DataType="{x:Type appointmentViewModel:SelectableOperation}">
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Margin="2" Content="{Binding Operation.Description}"/>
+                                    <Label Margin="2"  Content="{Binding IsSelected}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.Resources>
+
+                    </ListBox>
+                    <DataGrid Width="220" ItemsSource="{Binding Path=Patients}" SelectionMode="Single" Visibility="{Binding HidePatient}" SelectedItem="{Binding SelectedPatient, Mode=TwoWay}">
+                    </DataGrid>
+                    <ListBox ItemsSource="{Binding Teeth}" SelectionMode="Multiple" Width="220" Visibility="{Binding HideTeeth}">
+
+                        <ListBox.Resources>
+                            <Style TargetType="{x:Type ListBoxItem}">
+                                <Setter Property="IsSelected" Value="{Binding Path=IsSelected, Mode=TwoWay}"/>
+                            </Style>
+
+                            <DataTemplate DataType="{x:Type appointmentViewModel:SelectableTooth}">
+                                <StackPanel Orientation="Horizontal">
+                                    <Label  Margin="2" Content="{Binding Tooth.Name}"/>
+                                    <Label Margin="2"  Content="{Binding IsSelected}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.Resources>
+
+                    </ListBox>
+                </WrapPanel>
+                
+            </Expander>
+            <Expander DockPanel.Dock="Bottom" Header="Notes" VerticalAlignment="Top">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch">
+                            <StackPanel Name="StackScroll" Background="Wheat" >
+                                <ScrollViewer Height="130" Width="268">
+                                    <ItemsControl x:Name="stackPatientNotes" ItemsSource="{Binding Notes}" HorizontalAlignment="Left" VerticalAlignment="Top" ItemTemplate="{StaticResource NoteItemTemplate}" ItemsPanel="{StaticResource NoteItemsPanelTemplate}" />
+                                </ScrollViewer>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Expander>
+            
+        </DockPanel>
+        </Border>
+</UserControl>

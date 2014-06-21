@@ -1,0 +1,45 @@
+﻿<Page x:Class="DentistApp.UI.Frames.Operations"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      mc:Ignorable="d" 
+      xmlns:dg="http://schemas.microsoft.com/wpf/2008/toolkit"
+      xmlns:vm="clr-namespace:DentistApp.UI.ViewModels"
+      xmlns:commands="clr-namespace:DentistApp.UI.Commands"
+	Title="Operations">
+    <Page.Resources>
+        <vm:OperationViewModel x:Key="OperationsViewModel"></vm:OperationViewModel>
+    </Page.Resources>
+    <ScrollViewer VerticalScrollBarVisibility="Visible">
+    <Grid DataContext="{Binding Source={StaticResource OperationsViewModel}}" Name="grid">
+        <StackPanel>
+            <Button Content="Delete Operation" Command="{Binding Path=DeleteOperationCommand}"/>
+            
+            
+            <DataGrid ItemsSource="{Binding Operations, Mode=TwoWay}" CanUserAddRows="True"
+                          AlternatingRowBackground="#ddd"
+                          CanUserSortColumns="true"
+                          AutoGenerateColumns="False"
+                  SelectedItem="{Binding Operation, Mode=TwoWay}" 
+                  >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Description" Binding="{Binding Description, Mode=TwoWay}"/>
+                <DataGridTextColumn Header="Amount" Binding="{Binding Amount}"/>
+                        <DataGridTemplateColumn>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <Button Content="Save" Command="{Binding DataContext.UpdateOperationCommand, ElementName=grid}" CommandParameter="{Binding DataContext.Operation, ElementName=grid}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                            
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+        </DataGrid>
+            
+        </StackPanel>
+    </Grid>
+    </ScrollViewer>
+</Page>
