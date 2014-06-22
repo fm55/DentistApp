@@ -5,6 +5,7 @@ using System.Text;
 using System.Linq.Expressions;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Core;
 
 namespace DentistApp.DAL.DAL
 {
@@ -99,21 +100,30 @@ namespace DentistApp.DAL.DAL
 
         public int Update(params T[] items)
         {
+
             using (var context = new DentistDbContext())
             {
+
+                context.Configuration.ValidateOnSaveEnabled = true;
                 DbSet<T> dbSet = context.Set<T>();
                 foreach (T item in items)
                 {
                     item.EntityState = EntityState.Modified;
-                    dbSet.Add(item);
+                    dbSet.Attach(item); 
+                    
                     foreach (DbEntityEntry<IEntity> entry in context.ChangeTracker.Entries<IEntity>())
                     {
                         IEntity entity = entry.Entity;
                         entry.State = GetEntityState(entity.EntityState);
                     }
+
                 }
-                return context.SaveChanges();
+
+                context.SaveChanges();
             }
+
+            return items.Length;
+
         }
 
         public int Remove(params T[] items)

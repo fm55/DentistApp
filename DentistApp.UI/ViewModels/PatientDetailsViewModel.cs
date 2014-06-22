@@ -47,13 +47,15 @@ namespace DentistApp.UI.ViewModels
         public ObservableCollection<NoteViewModel> PatientNotes { get; set; }
         public ObservableCollection<Operation> PatientOperations { get; set; }
         public ObservableCollection<Tooth> PatientTeeth { get; set; }
+        public double AmountToPay { get; set; }
+        public double AmountPaid { get; set; }
         PatientController PatientController { get; set; }
         AppointmentController AppointmentController { get; set; }
         NoteController NoteController { get; set; }
         public string SearchText { get; set; }
         ObservableCollection<Appointment> Appointments { get; set; }
         private Patient _selectedPatient;
-       
+
         public Patient SelectedPatient
         {
 
@@ -68,8 +70,18 @@ namespace DentistApp.UI.ViewModels
 
                 _selectedPatient = value;
                 PopulatePatientDetails(value);
+
                 RaisePropertyChanged("SelectedPatient");
             }
+        }
+
+        private void GetAmountDetails(Patient patient)
+        {
+            if (patient == null || patient.PatientId == 0) return;
+            AmountToPay = PatientController.TotalAmountToPay(patient.PatientId);
+            AmountPaid = PatientController.TotalAmountPaid(patient.PatientId);
+            RaisePropertyChanged("AmountToPay");
+            RaisePropertyChanged("AmountPaid");
         }
 
         private Patient _selectedPatientFullObject;
@@ -158,7 +170,7 @@ namespace DentistApp.UI.ViewModels
         
         private void deletePatient()
         {
-            if (ShouldDelete()) return;
+            if (!ShouldDelete()) return;
             Patient p = SelectedPatient;
             //this.NotificationToPatientDelete.Raised += new EventHandler<GenericInteractionRequestEventArgs<Patient>>(NotificationToPatient_Raised);
             //this.NotificationToPatientDelete.Raise(p, this.DeletePatientCallback, () => { });
@@ -229,11 +241,25 @@ namespace DentistApp.UI.ViewModels
             {
                 return new DentistApp.UI.Commands.DelegateCommand((object o) =>
                 {
-                    if (ShouldDelete()) return;
+                    if (!ShouldDelete()) return;
                     AppointmentController.Delete(AppointmentController.List((int)o).First());
-                    var apps = AppointmentController.List();
-                    Appointments = new ObservableCollection<Appointment>(apps.OrderByDescending(d => d.StartTime));
-                    RaisePropertyChanged("Appointments");
+                    PopulatePatientDetails(SelectedPatient);
+                },
+                (object o) =>
+                {
+                    return true;
+                });
+            }
+        }
+
+        public ICommand SaveAppointment
+        {
+            get
+            {
+                return new DelegateCommand((object o) =>
+                {
+                    AppointmentController.SaveAppointment(o as Appointment);
+                    PopulatePatientDetails(SelectedPatient);
                 },
                 (object o) =>
                 {
@@ -288,6 +314,9 @@ namespace DentistApp.UI.ViewModels
             RaisePropertyChanged("PatientAppointments");
             RaisePropertyChanged("PatientNotes");
             RaisePropertyChanged("PatientOperations");
+
+
+            GetAmountDetails(SelectedPatientFullObject);
         }
 
         

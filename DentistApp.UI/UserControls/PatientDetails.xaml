@@ -91,6 +91,12 @@
 
                                 <TextBlock Height="23" Width="200" HorizontalAlignment="Left"   Text="Country" VerticalAlignment="Top" />
                                 <TextBox Height="23" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top" Text="{Binding Path=SelectedPatient.Country}" />
+
+                                <TextBlock Height="23" Width="200" HorizontalAlignment="Left"   Text="Amount To Pay" VerticalAlignment="Top" />
+                                <TextBlock Height="23" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top" Text="{Binding AmountToPay}" />
+
+                                <TextBlock Height="23" Width="200" HorizontalAlignment="Left"   Text="Amount Paid" VerticalAlignment="Top" />
+                                <TextBlock Height="23" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top" Text="{Binding AmountPaid}" />
                             </UniformGrid>
 
 

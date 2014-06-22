@@ -47,6 +47,25 @@ namespace DentistApp.UI.ViewModels
             }
         }
 
+
+        public ICommand SaveAppointment
+        {
+            get
+            {
+                return new DelegateCommand((object o) =>
+                {
+
+                    var apps = AppointmentsController.List();
+                    Appointments = new ObservableCollection<Appointment>(apps.OrderByDescending(d => d.StartTime));
+                    RaisePropertyChanged("Appointments");
+                },
+                (object o) =>
+                {
+                    return true;
+                });
+            }
+        }
+
         private ICollectionView _items;
         public ICollectionView Items
         {

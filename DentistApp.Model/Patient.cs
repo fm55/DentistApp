@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DentistApp.Model;
+using System.ComponentModel.DataAnnotations;
 
 namespace DentistApp.DAL
 {
     public class Patient : BaseEntity
     {
+        [Key]
         public int PatientId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

@@ -33,7 +33,10 @@ namespace DentistApp.BL
             }
             else
             {
-                Appointment.EntityState = EntityState.Modified;
+                //set state of all entities to unchanged
+                Appointment.Operation = null;
+                Appointment.Patient = null;
+                Appointment.Teeth = null;
                 AppointmentRepository.Update(Appointment);
             }
 

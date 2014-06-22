@@ -36,7 +36,11 @@
                         <toolkit:DateTimePicker Value="{Binding Path=NewAppointment.EndTime}" FontFamily="Calibri" Width="320"/>
                     </StackPanel>
                     <TextBox Text="{Binding Path=NewAppointment.Description}" FontFamily="Calibri" Height="74"  VerticalAlignment="Top" FontStyle="Italic" />
+                    <TextBlock HorizontalAlignment="Left"   Text="Amount To Pay" VerticalAlignment="Top" />
+                    <TextBox HorizontalAlignment="Left" VerticalAlignment="Top" Text="{Binding Path=NewAppointment.AmountToPay}" Width="189" />
 
+                    <TextBlock HorizontalAlignment="Left"   Text="Amount Paid" VerticalAlignment="Top" />
+                    <TextBox HorizontalAlignment="Left" VerticalAlignment="Top" Text="{Binding Path=NewAppointment.AmountPaid}" Width="187" />
                 </StackPanel>
             </ScrollViewer>
             <Expander DockPanel.Dock="Top"  Header="Details" VerticalAlignment="Top">

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DentistApp.DAL;
+using System.ComponentModel.DataAnnotations;
 
 namespace DentistApp.Model
 {
@@ -10,6 +11,7 @@ namespace DentistApp.Model
     {
 
         public User() : base() { }
+        [Key]
         public int UserId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

@@ -72,7 +72,7 @@ namespace DentistApp.UI.ViewModels
         }
         public void DeleteOperation(object o)
         {
-            if (ShouldDelete()) return;
+            if (!ShouldDelete()) return;
             var operation = o as Operation;
             OperationController.Delete(Operation);
             LoadOperations(null);

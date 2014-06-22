@@ -56,6 +56,8 @@ namespace DentistApp.BL
         {
 
             var patient = PatientDAL.GetSingle(d => d.PatientId == patientId, b => b.Appointments, b => b.Notes, b => b.Appointments.Select(c => c.Operation), b => b.Appointments.Select(c => c.Notes), b=>b.Appointments.Select(t=>t.Teeth.Select(e=>e.Teeth)), b => b.Appointments.Select(c => c.Operation.Select(o => o.Operation)));
+            patient.Appointments = patient.Appointments.GroupBy(p => p.AppointmentId).Select(g => g.First()).ToList().Where(p => p.IsDeleted == false).ToList();
+            
             return patient;
         }
 
@@ -74,13 +76,13 @@ namespace DentistApp.BL
         public List<Appointment> GetPatientAppointments(int patientId)
         {
             var list= Get(patientId).Appointments.Select(d => d.Teeth.Where(t => t.IsDeleted == false)).SelectMany(i => i).Where(a => a.Appointment.IsDeleted == false).ToList().Select(i => i.Appointment).ToList();
-            return list;
+            return list.GroupBy(p => p.AppointmentId).Select(g => g.First()).ToList().Where(p => p.IsDeleted == false).ToList(); ;
         }
 
         public List<Appointment> GetPatientAppointments(int patientId, int toothId)
         {
             var list = Get(patientId).Appointments.Select(d => d.Teeth.Where(t => t.Teeth.ToothId == toothId && t.IsDeleted == false)).SelectMany(i => i).Where(a => a.Appointment.IsDeleted == false).ToList().Select(i => i.Appointment).ToList();
-            return list;
+            return list.GroupBy(p => p.AppointmentId).Select(g => g.First()).ToList().Where(p => p.IsDeleted == false).ToList();
         }
 
 
@@ -92,6 +94,16 @@ namespace DentistApp.BL
         public List<Operation> GetPatientOperations(int patientId)
         {
             return GetPatientAppointments(patientId).Select(o => o.Operation.Select(i => i.Operation)).SelectMany(i => i).OrderBy(o => o.Description).ToList();
+        }
+
+        public double TotalAmountToPay(int patiendId)
+        {
+            return GetPatientAppointments(patiendId).Sum(p => p.AmountToPay);
+        }
+
+        public double TotalAmountPaid(int patiendId)
+        {
+            return GetPatientAppointments(patiendId).Sum(p => p.AmountPaid);
         }
     }
 }

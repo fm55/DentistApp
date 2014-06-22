@@ -28,14 +28,20 @@
                     <StackPanel Orientation="Horizontal">
                         <Button Content="Delete" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, 
                         Path=DataContext.DeleteAppointment}" CommandParameter="{Binding AppointmentId}"/>
-                        <Button Content="Edit" Command="{Binding 
+                        <Button Content="Save" Command="{Binding 
                         RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, 
-                        Path=DataContext.EditAppointment}" CommandParameter="{Binding AppointmentId}"/>
+                        Path=DataContext.SaveAppointment}" CommandParameter="{Binding}">
+                        </Button>
                     </StackPanel>
                     <Label  Content="{Binding Path=StartTime, Converter={StaticResource DateConverter}}" FontFamily="Bookman Old Style" FontSize="52" FontWeight="Bold" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
                     <WrapPanel Width="205" >
                         <Label Width="100"  Content="{Binding Path=Patient.FirstName}" FontFamily="Bookman Old Style" FontSize="22" FontWeight="Bold" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
                         <Label Width="100" Content="{Binding Path=Patient.LastName}" FontFamily="Bookman Old Style" FontSize="22" FontWeight="Bold" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                        <TextBlock HorizontalAlignment="Left"   Text="Amount To Pay" VerticalAlignment="Top" />
+                        <TextBox HorizontalAlignment="Left" VerticalAlignment="Top" Text="{Binding Path=AmountToPay}" Width="189" />
+
+                        <TextBlock HorizontalAlignment="Left"   Text="Amount Paid" VerticalAlignment="Top" />
+                        <TextBox HorizontalAlignment="Left" VerticalAlignment="Top" Text="{Binding Path=AmountPaid}" Width="187" />
                     </WrapPanel>
                 </StackPanel>
             </Border>
