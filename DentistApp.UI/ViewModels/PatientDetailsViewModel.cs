@@ -36,6 +36,14 @@ namespace DentistApp.UI.ViewModels
             this.NotificationToPatientDelete = new GenericInteractionRequest<Patient>();
             NoteController = new NoteController();
             AppointmentController = new AppointmentController();
+            Start = DateTime.Now.AddMonths(-1);
+            End = DateTime.Now.AddMonths(1);
+            OnlyNotFullyPaid = false;
+            RaisePropertyChanged("Appointments");
+            RaisePropertyChanged("Items");
+            RaisePropertyChanged("OnlyNotFullyPaid");
+            RaisePropertyChanged("Start");
+            RaisePropertyChanged("End");
             Reset();
         }
 
@@ -55,7 +63,9 @@ namespace DentistApp.UI.ViewModels
         public string SearchText { get; set; }
         ObservableCollection<Appointment> Appointments { get; set; }
         private Patient _selectedPatient;
-
+        public bool OnlyNotFullyPaid { get; set; }
+        public DateTime? Start { get; set; }
+        public DateTime? End { get; set; }
         public Patient SelectedPatient
         {
 
@@ -287,7 +297,7 @@ namespace DentistApp.UI.ViewModels
             RaisePropertyChanged("ProgressValue");
 
             SelectedPatientFullObject = PatientController.Get(patientId);
-            PatientAppointments = new ObservableCollection<Appointment>(PatientController.GetPatientAppointments(patientId));
+            PatientAppointments = new ObservableCollection<Appointment>(PatientController.GetPatientAppointments(patientId, OnlyNotFullyPaid, Start, End));
 
             var thisNotes = new ObservableCollection<Note>(PatientController.GetPatientNotes(patientId));
             var notes = thisNotes.Select(note => new NoteViewModel(note)).ToList();
@@ -319,8 +329,23 @@ namespace DentistApp.UI.ViewModels
             GetAmountDetails(SelectedPatientFullObject);
         }
 
-        
-        
+
+        public ICommand SearchAppointments
+        {
+            get
+            {
+                return new DelegateCommand((object o) =>
+                {
+                    PatientAppointments = new ObservableCollection<Appointment>(PatientController.GetPatientAppointments(SelectedPatient.PatientId, OnlyNotFullyPaid, Start, End));
+                    Appointments = new ObservableCollection<Appointment>(PatientAppointments.OrderByDescending(d => d.StartTime));
+                    RaisePropertyChanged("PatientAppointments");
+                },
+                (object o) =>
+                {
+                    return true;
+                });
+            }
+        }
 
         private void SubscribeToEvents()
         {

@@ -9,6 +9,7 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:prism="clr-namespace:Microsoft.Practices.Prism.Interactivity.InteractionRequest;assembly=Microsoft.Practices.Prism.Interactivity"
              xmlns:interactionRequest="clr-namespace:DentistApp.UI.Events"
+             xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:interactions="clr-namespace:DentistApp.UI.Events"
              mc:Ignorable="d">
     <UserControl.Resources>
@@ -130,19 +131,31 @@
             <TabItem Header="Appointments"  IsEnabled="{Binding IsExistingPatient}">
                 <Grid>
 
+                    <StackPanel Orientation="Vertical" Width="Auto"
+              HorizontalAlignment="Left"   >
+                        <StackPanel Orientation="Horizontal">
+                            <Button Command="{Binding Path=CreateAppointment}" DockPanel.Dock="Top" Width="186">Add Appointment</Button>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <toolkit:DateTimePicker Value="{Binding Path=Start}" FontFamily="Calibri" Width="320" />
+                            <Label Content=" To " FontFamily="Calibri" />
+                            <toolkit:DateTimePicker Value="{Binding Path=End, Mode=TwoWay}" FontFamily="Calibri" Width="320"/>
+                            <Button Command="{Binding SearchAppointments}" Content="Search"/>
 
-                    
-                    <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible">
-                        
-                        <StackPanel Orientation="Horizontal"
+                            <CheckBox  IsChecked="{Binding OnlyNotFullyPaid}"  Content="Only Unpaid"/>
+                        </StackPanel>
+                        <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible">
+
+                            <StackPanel Orientation="Horizontal"
               HorizontalAlignment="Left"
               >
-                            <Button Command="{Binding Path=CreateAppointment}" DockPanel.Dock="Top" Width="186">Add Appointment</Button>
-                            <ItemsControl x:Name="stackPatientAppointments" ItemsSource="{Binding Path=PatientAppointments}" HorizontalAlignment="Left" Margin="0,8,0,0" VerticalAlignment="Top"
+
+                                <ItemsControl x:Name="stackPatientAppointments" ItemsSource="{Binding Path=PatientAppointments}" HorizontalAlignment="Left" Margin="0,8,0,0" VerticalAlignment="Top"
                           ItemTemplate="{StaticResource AppointmentItemTemplate}"                 
                           ItemsPanel="{StaticResource AppointmentItemsPanelTemplate}"/>
-                        </StackPanel>
-                    </ScrollViewer>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </StackPanel>
                 </Grid>
 
             </TabItem>

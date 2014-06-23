@@ -11,6 +11,7 @@ namespace DentistApp.BL
     public class PatientController
     {
         IGenericDataRepository<Patient> PatientDAL { get; set; }
+
         public PatientController()
         {
             PatientDAL = new GenericDataRepository<Patient>();
@@ -73,15 +74,23 @@ namespace DentistApp.BL
 
         }
 
-        public List<Appointment> GetPatientAppointments(int patientId)
+        public List<Appointment> GetPatientAppointments(int patientId, bool onlyNotFullyPaid = false, DateTime? start = null, DateTime? end = null)
         {
             var list= Get(patientId).Appointments.Select(d => d.Teeth.Where(t => t.IsDeleted == false)).SelectMany(i => i).Where(a => a.Appointment.IsDeleted == false).ToList().Select(i => i.Appointment).ToList();
+            list = list.Where(a => a.AmountPaid < a.AmountToPay || (!onlyNotFullyPaid)).ToList();
+
+            list = list.Where((a => ((a.StartTime >= start || start == null) && (a.EndTime <= end || end == null)))).ToList();
             return list.GroupBy(p => p.AppointmentId).Select(g => g.First()).ToList().Where(p => p.IsDeleted == false).ToList(); ;
         }
 
-        public List<Appointment> GetPatientAppointments(int patientId, int toothId)
+        public List<Appointment> GetPatientAppointments(int patientId, int toothId, bool onlyNotFullyPaid = false, DateTime? start = null, DateTime? end = null)
         {
             var list = Get(patientId).Appointments.Select(d => d.Teeth.Where(t => t.Teeth.ToothId == toothId && t.IsDeleted == false)).SelectMany(i => i).Where(a => a.Appointment.IsDeleted == false).ToList().Select(i => i.Appointment).ToList();
+            list = list.Where(a => a.AmountPaid < a.AmountToPay || (!onlyNotFullyPaid)).ToList();
+
+            list = list.Where((a => ((a.StartTime >= start || start == null) && (a.EndTime <= end || end == null)))).ToList();
+            
+            
             return list.GroupBy(p => p.AppointmentId).Select(g => g.First()).ToList().Where(p => p.IsDeleted == false).ToList();
         }
 

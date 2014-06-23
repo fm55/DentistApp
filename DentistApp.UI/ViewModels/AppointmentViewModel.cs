@@ -24,8 +24,26 @@ namespace DentistApp.UI.ViewModels
         public ObservableCollection<Appointment> Appointments { get; set; }
         public ObservableCollection<Note> PatientNotes { get; set; }
         public AppointmentController AppointmentsController {get;set;}
+        public bool OnlyNotFullyPaid { get; set; }
+        public DateTime? Start { get; set; }
+        public DateTime? End { get; set; }
 
-
+        public ICommand SearchAppointments
+        {
+            get
+            {
+                return new DelegateCommand((object o) =>
+                {
+                    var apps = AppointmentsController.List(0, OnlyNotFullyPaid, Start, End);
+                    Appointments = new ObservableCollection<Appointment>(apps.OrderByDescending(d => d.StartTime));
+                    RaisePropertyChanged("Appointments");
+                },
+                (object o) =>
+                {
+                    return true;
+                });
+            }
+        }
 
         public ICommand DeleteAppointment
         {
@@ -74,7 +92,7 @@ namespace DentistApp.UI.ViewModels
                 if (_items == null)
                 {
                     AppointmentsController = new AppointmentController();
-                    var apps = AppointmentsController.List();
+                    var apps = AppointmentsController.List(0, OnlyNotFullyPaid, Start, End);
                     Appointments = new ObservableCollection<Appointment>(apps.OrderByDescending(d=>d.StartTime));
                     RaisePropertyChanged("Appointments");
                     _items = System.Windows.Data.CollectionViewSource.GetDefaultView(apps.ToList<Appointment>());
@@ -109,7 +127,7 @@ namespace DentistApp.UI.ViewModels
             };
 
             window.ShowDialog();
-            Appointments = new ObservableCollection<Appointment>(AppointmentsController.List().OrderByDescending(d => d.StartTime));
+            Appointments = new ObservableCollection<Appointment>(AppointmentsController.List(0, OnlyNotFullyPaid, Start, End).OrderByDescending(d => d.StartTime));
             RaisePropertyChanged("Appointments");
         }
         #endregion
@@ -128,8 +146,14 @@ namespace DentistApp.UI.ViewModels
         public AppointmentViewModel()
         {
             var items = Items;
+            Start = DateTime.Now.AddMonths(-1);
+            End = DateTime.Now.AddMonths(1);
+            OnlyNotFullyPaid = false;
             RaisePropertyChanged("Appointments");
             RaisePropertyChanged("Items");
+            RaisePropertyChanged("OnlyNotFullyPaid");
+            RaisePropertyChanged("Start");
+            RaisePropertyChanged("End");
         }
        
 

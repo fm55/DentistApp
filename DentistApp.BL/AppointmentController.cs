@@ -74,11 +74,15 @@ namespace DentistApp.BL
             SaveAppointment(Appointment);
         }
 
-        public IEnumerable<Appointment> List(int AppointmentId = 0)
+        public IEnumerable<Appointment> List(int AppointmentId = 0, bool onlyNotFullyPaid = false, DateTime? start = null, DateTime? end = null)
         {
             if (AppointmentId == 0)
             {
-                return AppointmentRepository.GetAll(d => d.Operation, d => d.Teeth, d => d.Patient, d=>d.Operation.Select(e=>e.Operation));
+                var apps = AppointmentRepository.GetAll(d => d.Operation, d => d.Teeth, d => d.Patient, d=>d.Operation.Select(e=>e.Operation));
+                apps = apps.Where(a => a.AmountPaid < a.AmountToPay || (!onlyNotFullyPaid)).ToList();
+
+                apps = apps.Where((a => ((a.StartTime >= start || start == null) && (a.EndTime <= end || end == null)))).ToList();
+                return apps;
             }
             return AppointmentRepository.GetList(d => d.AppointmentId == AppointmentId, d => d.Operation, d => d.Teeth, d => d.Patient, d=>d.Operation.Select(e=>e.Operation));
 
@@ -120,5 +124,8 @@ namespace DentistApp.BL
             return AppointmentRepository.GetList(d => d.StartTime.Date==DateTime.Today.Date, d => d.Operation, d => d.Teeth, d => d.Patient, d=>d.Operation.Select(e=>e.Operation));
 
         }
+
+
+        
     }
 }
