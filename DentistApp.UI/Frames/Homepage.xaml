@@ -31,15 +31,17 @@
 
         <DockPanel LastChildFill="True" Width="Auto">
             <ScrollViewer DockPanel.Dock="Left" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Visible">
-            <StackPanel Orientation="Vertical">
-                <Label Content="Todays Appointments" DockPanel.Dock="Top" Height="35"/>
-                
-                
-                    <ItemsControl x:Name="stackPatientAppointments" ItemsSource="{Binding Path=Appointments}" HorizontalAlignment="Left"  VerticalAlignment="Top"
+                <Border BorderThickness="2" CornerRadius="5" BorderBrush="Black">
+                    <StackPanel Orientation="Vertical">
+                        <Label Content="Next 14 Days Appointments" DockPanel.Dock="Top" Height="35" FontSize="16" FontWeight="Bold" />
+
+
+                        <ItemsControl x:Name="stackPatientAppointments" ItemsSource="{Binding Path=Appointments}" HorizontalAlignment="Left"  VerticalAlignment="Top"
                               ItemTemplate="{StaticResource AppointmentItemTemplate}"                 
                               ItemsPanel="{StaticResource AppointmentItemsPanelTemplate}"/>
-               
-            </StackPanel>
+
+                    </StackPanel>
+                </Border>
             </ScrollViewer>
             <UniformGrid Columns="3">
                 <Button Width="Auto" Command="{Binding Navigate}" CommandParameter="Patients" >

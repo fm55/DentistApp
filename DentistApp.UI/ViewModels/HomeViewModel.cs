@@ -38,7 +38,7 @@ namespace DentistApp.UI.ViewModels
                 return new DelegateCommand((object o) =>
                 {
                     AppointmentsController.Delete(AppointmentsController.List((int)o).First());
-                    var apps = AppointmentsController.ListTodayAppointments();
+                    var apps = AppointmentsController.List(0, false, DateTime.Now, DateTime.Now.AddDays(14));
                     Appointments = new ObservableCollection<Appointment>(apps.OrderByDescending(d => d.StartTime));
                     RaisePropertyChanged("Appointments");
                 },

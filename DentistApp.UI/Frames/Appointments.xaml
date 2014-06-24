@@ -38,14 +38,16 @@
             <StackPanel Orientation="Horizontal">
                 <Button Command="{Binding CreateAppointment}" Content="Create Appointment"/>
             </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <toolkit:DateTimePicker Value="{Binding Path=Start}" FontFamily="Calibri" Width="320" />
-                <Label Content=" To " FontFamily="Calibri" />
-                <toolkit:DateTimePicker Value="{Binding Path=End, Mode=TwoWay}" FontFamily="Calibri" Width="320"/>
-                <Button Command="{Binding SearchAppointments}" Content="Search"/>
+            <Border BorderThickness="2" CornerRadius="5" BorderBrush="Black">
+                <StackPanel Orientation="Horizontal">
+                    <toolkit:DateTimePicker Value="{Binding Path=Start}" FontFamily="Calibri" Width="320" />
+                    <Label Content=" To " FontFamily="Calibri" />
+                    <toolkit:DateTimePicker Value="{Binding Path=End, Mode=TwoWay}" FontFamily="Calibri" Width="320"/>
+                    <Button Command="{Binding SearchAppointments}" Content="Search"/>
 
-                <CheckBox  IsChecked="{Binding OnlyNotFullyPaid}"  Content="Only Unpaid"/>
-            </StackPanel>
+                    <CheckBox  IsChecked="{Binding OnlyNotFullyPaid}"  Content="Only Unpaid"/>
+                </StackPanel>
+            </Border>
             <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Visible">
                 
                 <ItemsControl x:Name="stackPatientAppointments" ItemsSource="{Binding Path=Appointments}" HorizontalAlignment="Left" Margin="0,8,0,0" VerticalAlignment="Top"

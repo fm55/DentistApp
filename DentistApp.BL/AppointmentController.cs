@@ -70,7 +70,7 @@ namespace DentistApp.BL
             Appointment.Operation = operationApps;
             Appointment.Teeth = teethApps;
             Appointment.Notes = Notes;
-
+            Appointment.EntityState = EntityState.Added;
             SaveAppointment(Appointment);
         }
 
