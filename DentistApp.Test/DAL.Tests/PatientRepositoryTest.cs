@@ -11,6 +11,8 @@ namespace DentistApp.Test.DAL.Tests
     [TestClass]
     public class PatientRepositoryTest
     {
+
+        //added a comment
         private IGenericDataRepository<Patient> PatientDAL { get; set; }
         
         public PatientRepositoryTest()
