@@ -7,6 +7,7 @@ using Microsoft.Practices.Prism.Events;
 using Microsoft.Practices.Prism.Commands;
 using DentistApp.DAL;
 using DentistApp.BL;
+using System.Windows.Media;
 
 namespace DentistApp.UI.ViewModels
 {
@@ -19,7 +20,18 @@ namespace DentistApp.UI.ViewModels
         public bool IsReadOnly { get; set; }
         public DateTime DateCreated { get; set; }
         public ICommand Edit { get{return new DelegateCommand(editNote);}}
-        public ICommand Save { get { return new DelegateCommand(() => { NoteController.SaveNote(new Note { NoteId = this.NoteId, Description = this.Description }); }); } }
+        public ICommand Save
+        {
+            get
+            {
+                return new DelegateCommand(() =>
+            {
+                NoteController.SaveNote(new Note { NoteId = this.NoteId, Description = this.Description });
+                IsReadOnly = true; RaisePropertyChanged("IsReadOnly");
+            }
+                );
+            }
+        }
 
         private Note SelectedNote { get; set; }
         public ICommand Delete { get { return new DelegateCommand(() => {if (ShouldDelete())return; NoteController.Delete(SelectedNote); }); } }

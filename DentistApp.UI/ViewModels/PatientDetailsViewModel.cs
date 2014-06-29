@@ -165,7 +165,7 @@ namespace DentistApp.UI.ViewModels
             SelectedPatient.EntityState = EntityState.Modified;
             Note n = new Note()
             {
-                Description = "Double click to edit",
+                Description = "Click on Edit to change description",
                 EntityState = EntityState.Added,
                 PatientId = SelectedPatient.PatientId
             };

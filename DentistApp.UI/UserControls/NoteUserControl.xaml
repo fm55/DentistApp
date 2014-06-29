@@ -13,7 +13,19 @@
                     <Button FontWeight="Bold" Width="Auto" Background="#13000000" BorderBrush="#00000000" Command="{Binding Delete}">Delete</Button>
                 </WrapPanel>
                 <Label x:Name="txtCreatedAt" FontFamily="Calibri" FontStyle="Italic" FontWeight="Bold" Content="{Binding Path=DateCreated}" Height="30" />
-                <TextBox BorderBrush="Transparent" Background="Transparent" Name="txtDescription" Text="{Binding Path=Description}" FontFamily="Calibri" FontStyle="Italic" IsReadOnly="{Binding IsReadOnly}" Height="124" />
+                <TextBox BorderBrush="Transparent" Name="txtDescription" Text="{Binding Path=Description}" FontFamily="Calibri" FontStyle="Italic" IsReadOnly="{Binding IsReadOnly}"  Height="124" >
+                    <TextBox.Style>
+                        <Style TargetType="TextBox">
+                            <Setter Property="Background" Value="Transparent"></Setter>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsReadOnly}" Value="false">
+                                    <Setter Property="Background" Value="White"/>
+                                </DataTrigger>
+                            </Style.Triggers> 
+                        </Style>
+                    </TextBox.Style>
+
+                </TextBox>
             </StackPanel>
         </Grid>
     </Border>
