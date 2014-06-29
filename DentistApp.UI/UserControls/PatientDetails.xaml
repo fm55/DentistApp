@@ -40,20 +40,6 @@
             <TabItem Header="Details" Name="tabItem1" Background="Transparent">
 
                 <Grid >
-
-
-                    <i:Interaction.Triggers>
-
-                        <prism:InteractionRequestTrigger SourceObject="{Binding NotificationToPatientDelete}">
-                            <interactions:PatientDeleteInteractionAction>
-                                <interactions:PatientDeleteInteractionAction.Dialog>
-                                    <ui:PatientDeleteInteractionDialogView/>
-                                </interactions:PatientDeleteInteractionAction.Dialog>
-                            </interactions:PatientDeleteInteractionAction>
-                        </prism:InteractionRequestTrigger>
-
-                    </i:Interaction.Triggers>
-
                     <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible">
                         <StackPanel Orientation="Vertical">
                             <WrapPanel Orientation="Horizontal" Height="80">
