@@ -15,7 +15,9 @@
             <Border DockPanel.Dock="Top" CornerRadius="10" BorderThickness="2" BorderBrush="Black">
                 <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
                     <TextBlock Margin="5" Height="23" Name="textBlock2" Text="Search" FontSize="18" />
+                    <!-- Search text box on Enter -->
                     <TextBox Margin="5" x:Name="txtSearch" Height="69" VerticalAlignment="Top" Text="{Binding SearchText}" Width="482" Background="White" BorderBrush="Black" />
+                    <!-- Search by name or surname -->
                     <Button Margin="5"  HorizontalAlignment="Left"  Name="imgSearch" VerticalAlignment="Top" Command="{Binding Path=SearchPatients}">
                         <StackPanel>
                             <Image Source="/Resources/magnifier.png" Height="33" Width="44"  />
