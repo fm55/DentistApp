@@ -11,10 +11,10 @@ namespace DentistApp.Model
     public class OperationAppointment:BaseEntity
     {
         [Key]
-        public virtual int OperationAppointmentId { get; set; }
+        public int OperationAppointmentId { get; set; }
         
-        public virtual Operation Operation { get; set; }
-        public virtual Appointment Appointment { get; set; }
-        public virtual double Amount { get; set; }
+        public Operation Operation { get; set; }
+        public Appointment Appointment { get; set; }
+        public double Amount { get; set; }
     }
 }

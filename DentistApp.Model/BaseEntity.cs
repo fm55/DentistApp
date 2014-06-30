@@ -25,7 +25,7 @@ namespace DentistApp.DAL
         public DateTime DateCreated { get; set; }
         public bool IsDeleted { get; set; }
         public User CurrentUser { get; set; }
-        public virtual List<Note> Notes { get; set; }
+        public List<Note> Notes { get; set; }
 
         public BaseEntity()
         {
@@ -33,6 +33,7 @@ namespace DentistApp.DAL
             IsDeleted = false;
             CurrentUser = UserToken.CurrentUser;
             Notes = new List<Note>();
+            EntityState = EntityState.Unchanged;
         }
 
         public EntityState EntityState

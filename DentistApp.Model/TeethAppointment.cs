@@ -12,7 +12,7 @@ namespace DentistApp.Model
     {
         [Key]
         public int TeethAppointmentId { get; set; }
-        public virtual Tooth Teeth { get; set; }
-        public virtual Appointment Appointment { get; set; }
+        public Tooth Teeth { get; set; }
+        public Appointment Appointment { get; set; }
     }
 }

@@ -16,10 +16,10 @@ namespace DentistApp.DAL
         public DateTime EndTime { get; set; }
         public string Description { get; set; }
         
-        public virtual Patient Patient { get; set; }
-        public virtual List<OperationAppointment> Operation { get; set; }
+        public Patient Patient { get; set; }
+        public List<OperationAppointment> Operation { get; set; }
         public decimal Amount { get; set; }
-        public virtual List<TeethAppointment> Teeth { get; set; }
+        public List<TeethAppointment> Teeth { get; set; }
         public double AmountToPay { get; set; }
         public double AmountPaid { get; set; }
 

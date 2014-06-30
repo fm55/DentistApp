@@ -60,6 +60,9 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DAL.Tests\NoteRepositoryTest.cs" />
+    <Compile Include="DAL.Tests\OperationRepositoryTest.cs" />
+    <Compile Include="DAL.Tests\AppointmentRepositoryTest.cs" />
     <Compile Include="DAL.Tests\PatientRepositoryTest.cs" />
     <Compile Include="OperationControllerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

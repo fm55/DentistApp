@@ -11,7 +11,7 @@ namespace DentistApp.DAL.DAL
 {
     public class GenericDataRepository<T> : IGenericDataRepository<T> where T : BaseEntity
     {
-        public virtual IList<T> GetAll(params Expression<Func<T, object>>[] navigationProperties)
+        public IList<T> GetAll(params Expression<Func<T, object>>[] navigationProperties)
         {
             Func<T, bool> exp = t => t.IsDeleted == false;
             List<T> list;
@@ -31,7 +31,7 @@ namespace DentistApp.DAL.DAL
             return list;
         }
 
-        public virtual IList<T> GetList(Func<T, bool> where,
+        public IList<T> GetList(Func<T, bool> where,
              params Expression<Func<T, object>>[] navigationProperties)
         {
             Func<T, bool> expr1 = T => T.IsDeleted == false;
@@ -54,7 +54,7 @@ namespace DentistApp.DAL.DAL
             return list;
         }
 
-        public virtual T GetSingle(Func<T, bool> where,
+        public T GetSingle(Func<T, bool> where,
              params Expression<Func<T, object>>[] navigationProperties)
         {
             T item = null;
@@ -109,13 +109,13 @@ namespace DentistApp.DAL.DAL
                 foreach (T item in items)
                 {
                     item.EntityState = EntityState.Modified;
-                    dbSet.Attach(item); 
+                    dbSet.Add(item); 
                     
-                    foreach (DbEntityEntry<IEntity> entry in context.ChangeTracker.Entries<IEntity>())
-                    {
-                        IEntity entity = entry.Entity;
-                        entry.State = GetEntityState(entity.EntityState);
-                    }
+                    //foreach (DbEntityEntry<IEntity> entry in context.ChangeTracker.Entries<IEntity>())
+                    //{
+                        //IEntity entity = entry.Entity;
+                        //entry.State = GetEntityState(entity.EntityState);
+                    //}
 
                 }
 

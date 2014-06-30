@@ -26,7 +26,7 @@ namespace DentistApp.UI.ViewModels
             {
                 return new DelegateCommand(() =>
             {
-                NoteController.SaveNote(new Note { NoteId = this.NoteId, Description = this.Description });
+                NoteController.SaveNote(new Note { NoteId = this.NoteId, Description = this.Description }, SelectedNote.PatientId, SelectedNote.OperationId, SelectedNote.ToothId, SelectedNote.AppointmentId);
                 IsReadOnly = true; RaisePropertyChanged("IsReadOnly");
             }
                 );
@@ -34,7 +34,7 @@ namespace DentistApp.UI.ViewModels
         }
 
         private Note SelectedNote { get; set; }
-        public ICommand Delete { get { return new DelegateCommand(() => {if (ShouldDelete())return; NoteController.Delete(SelectedNote); }); } }
+        public ICommand Delete { get { return new DelegateCommand(() => {if (!ShouldDelete())return; NoteController.Delete(SelectedNote); }); } }
         public NoteViewModel(Note n)
         {
             SelectedNote = n;
@@ -53,5 +53,13 @@ namespace DentistApp.UI.ViewModels
             IsReadOnly = false;
             RaisePropertyChanged("IsReadOnly");
         }
+
+        public int? PatientId { get; set; }
+
+        public int? OperationId { get; set; }
+
+        public int? ToothId { get; set; }
+
+        public int? AppointmentId { get; set; }
     }
 }

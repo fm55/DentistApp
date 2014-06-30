@@ -34,9 +34,6 @@ namespace DentistApp.BL
             else
             {
                 //set state of all entities to unchanged
-                Appointment.Operation = null;
-                Appointment.Patient = null;
-                Appointment.Teeth = null;
                 AppointmentRepository.Update(Appointment);
             }
 

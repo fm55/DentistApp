@@ -87,7 +87,7 @@
                             </UniformGrid>
 
 
-                            <Expander ExpandDirection="Down" IsExpanded="False" Header="Notes">
+                            <Expander ExpandDirection="Down" IsExpanded="False" Header="Notes"  IsEnabled="{Binding IsExistingPatient}">
                                 <StackPanel Orientation="Vertical">
                                         <Button Command="{Binding Path=AddNoteForPatient}" Width="104">Add Note</Button>
                                         <ItemsControl x:Name="stackPatientNotes" ItemsSource="{Binding PatientNotes}" HorizontalAlignment="Left" Margin="0,8,0,0" VerticalAlignment="Top"

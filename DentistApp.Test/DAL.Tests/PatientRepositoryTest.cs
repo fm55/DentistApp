@@ -8,6 +8,9 @@ using DentistApp.DAL.DAL;
 
 namespace DentistApp.Test.DAL.Tests
 {
+    /// <summary>
+    /// Checks if add, update, delete, get and list works
+    /// </summary>
     [TestClass]
     public class PatientRepositoryTest
     {
@@ -58,13 +61,18 @@ namespace DentistApp.Test.DAL.Tests
 
 
             //arrange
-            var expected = 1;
+            var expected = Patient;
+            PatientDAL.Update(Patient);
             //act
-            var actual = PatientDAL.Update(Patient);
+            var actual = PatientDAL.GetSingle(p => p.PatientId == expected.PatientId); ;
+
+
+
+
             //assert
-            Assert.AreEqual(expected, actual, "Number of record saved is not 1");
-
-
+            Assert.AreEqual(expected.FirstName, actual.FirstName, "Number of record saved is not 1");
+            Assert.AreEqual(expected.LastName, actual.LastName, "Number of record saved is not 1");
+            Assert.AreEqual(expected.TelNo1, actual.TelNo1, "Number of record saved is not 1");
         }
 
 
@@ -78,11 +86,12 @@ namespace DentistApp.Test.DAL.Tests
 
 
             //arrange
-            var expected = 1;
+            var expected = PatientDAL.GetSingle(p => p.PatientId == Patient.PatientId);
+            PatientDAL.Remove(expected);
             //act
-            var actual = PatientDAL.Remove(Patient);
+            var actual = PatientDAL.GetSingle(p => p.PatientId == Patient.PatientId);
             //assert
-            Assert.AreEqual(expected, actual, "Number of record deleted is not 1");
+            Assert.AreEqual(null, actual, "Record still exists");
 
 
         }
@@ -99,7 +108,6 @@ namespace DentistApp.Test.DAL.Tests
 
             var expected = 1;
             var actual = PatientDAL.Add(patient);
-            Assert.AreEqual(expected, actual, "Number of record deleted is not 1");
 
             var patientFromDB = PatientDAL.GetSingle(d => d.FirstName == "NewRecord" + time);
             Assert.IsNotNull(patientFromDB, "Patient record is null");
@@ -119,8 +127,7 @@ namespace DentistApp.Test.DAL.Tests
             };
 
             var expected = new List<Patient>(){patient};
-            var actual = PatientDAL.Add(patient);
-            Assert.AreEqual(1, actual, "Number of record deleted is not 1");
+            PatientDAL.Add(patient);
 
             var patientFromDB = PatientDAL.GetList(d => d.FirstName == "NewRecord" + time);
             Assert.IsNotNull(patientFromDB, "Patient record is null");

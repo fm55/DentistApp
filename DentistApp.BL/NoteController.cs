@@ -39,12 +39,59 @@ namespace DentistApp.BL
 
         }
 
-        public void SaveNote(Note Note, Patient Patient, List<Operation> Operations, List<Tooth> Teeth, List<Note> Notes)
+        public void SaveNote(Note Note, int? PatientId=0, int? OperationId=0, int? ToothId=0, int? AppointmentId=0)
         {
+            SetPatientId(Note, PatientId);
+
+            SetAppointmentId(Note, AppointmentId);
+
+            SetToothId(Note, ToothId);
+
+            SetOperationId(Note, OperationId);
+        }
+
+        private void SetOperationId(Note Note, int? OperationId)
+        {
+            if (OperationId == 0)
+            {
+                SaveNote(Note);
+                return;
+            }
+            Note.OperationId = OperationId;
+        }
+
+        private void SetToothId(Note Note, int? ToothId)
+        {
+            if (ToothId == 0)
+            {
+                SaveNote(Note);
+                return;
+            }
+            Note.AppointmentId = ToothId;
+        }
+
+        private void SetAppointmentId(Note Note, int? AppointmentId)
+        {
+            if (AppointmentId == 0)
+            {
+                SaveNote(Note);
+                return;
+            }
+            Note.AppointmentId = AppointmentId;
+        }
+
+        private void SetPatientId(Note Note, int? PatientId)
+        {
+            if (PatientId == 0)
+            {
+                SaveNote(Note);
+                return;
+            }
+            Note.PatientId = PatientId;
             SaveNote(Note);
         }
 
-        public IEnumerable<Note> List(int NoteId = 0)
+        public IEnumerable<Note> List(int? NoteId = 0)
         {
             if (NoteId == 0)
             {
