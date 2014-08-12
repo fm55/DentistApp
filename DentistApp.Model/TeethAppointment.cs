@@ -12,7 +12,12 @@ namespace DentistApp.Model
     {
         [Key]
         public int TeethAppointmentId { get; set; }
+        [NotMapped]
         public Tooth Teeth { get; set; }
+        [NotMapped]
         public Appointment Appointment { get; set; }
+
+        public int TeethId { get; set; }
+        public int AppointmentId { get; set; }
     }
 }

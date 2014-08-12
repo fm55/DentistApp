@@ -9,10 +9,11 @@
     <UserControl.Resources>
         <converters:OperationsToListConverter x:Key="OperationsConverter"/>
         <converters:DateConverter x:Key="DateConverter"/>
+        <converters:TeethConverter x:Key="TeethConverter"/>
         <DataTemplate x:Key="NoteItemTemplate">
         <StackPanel>
-            <appointment:NoteUserControl Margin="15" 
- HorizontalAlignment="Left" VerticalAlignment="Top"></appointment:NoteUserControl>
+            <appointment:AppointmentNoteUserControl Margin="15" 
+ HorizontalAlignment="Left" VerticalAlignment="Top"></appointment:AppointmentNoteUserControl>
         </StackPanel>
     </DataTemplate>
     <ItemsPanelTemplate x:Key="NoteItemsPanelTemplate">
@@ -28,13 +29,13 @@
                     <StackPanel Orientation="Horizontal">
                         <Button Content="Delete" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, 
                         Path=DataContext.DeleteAppointment}" CommandParameter="{Binding AppointmentId}"/>
-                        <Button Content="Save" Command="{Binding 
+                        <Button Content="Edit" Command="{Binding 
                         RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, 
-                        Path=DataContext.SaveAppointment}" CommandParameter="{Binding}">
+                        Path=DataContext.EditAppointment}" CommandParameter="{Binding}">
                         </Button>
                     </StackPanel>
                     <Label  Content="{Binding Path=StartTime, Converter={StaticResource DateConverter}}" FontFamily="Bookman Old Style" FontSize="52" FontWeight="Bold" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                    <WrapPanel Width="205" >
+                    <WrapPanel Width="250" >
                         <Label Width="100"  Content="{Binding Path=Patient.FirstName}" FontFamily="Bookman Old Style" FontSize="22" FontWeight="Bold" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
                         <Label Width="100" Content="{Binding Path=Patient.LastName}" FontFamily="Bookman Old Style" FontSize="22" FontWeight="Bold" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
                         <TextBlock HorizontalAlignment="Left"   Text="Amount To Pay" VerticalAlignment="Top" />
@@ -45,10 +46,10 @@
                     </WrapPanel>
                 </StackPanel>
             </Border>
-            <Expander DockPanel.Dock="Top"  Header="Details" VerticalAlignment="Top">
+            <Expander DockPanel.Dock="Top"  Header="Details" VerticalAlignment="Top" Background="Transparent">
                     <StackPanel Orientation="Vertical">
                         <StackPanel Orientation="Horizontal">
-                        <Label Content="{Binding Path=StartTime}" FontFamily="Calibri" Width="50" />
+                        <Label Content="{Binding Path=StartTime}" FontFamily="Calibri" />
                             <Label Content=" To " FontFamily="Calibri" />
                         <Label Content="{Binding Path=EndTime}" FontFamily="Calibri" />
                         </StackPanel>
@@ -56,17 +57,22 @@
                         <Label Content="{Binding Path=Description}" HorizontalAlignment="Left" FontFamily="Calibri" Height="74" VerticalAlignment="Top" FontStyle="Italic" />
                     </ScrollViewer>
                     <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Visible">
-                        <Label Content="{Binding Path=Operation, Converter={StaticResource ResourceKey=OperationsConverter}}" FontFamily="Calibri" Height="304" VerticalAlignment="Top"  FontStyle="Italic" />
+                        <Label Content="{Binding Path=AppointmentId, Converter={StaticResource ResourceKey=OperationsConverter}}" FontFamily="Calibri" VerticalAlignment="Top"  FontStyle="Italic" />
                 </ScrollViewer>
-                    </StackPanel>
+                    <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Visible">
+                        <Label Content="{Binding Path=AppointmentId, Converter={StaticResource ResourceKey=TeethConverter}}" FontFamily="Calibri" VerticalAlignment="Top"  FontStyle="Italic" />
+                    </ScrollViewer>
+                </StackPanel>
             </Expander>
             <Expander DockPanel.Dock="Bottom" Header="Notes" VerticalAlignment="Top">
                         <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch">
                             <StackPanel Name="StackScroll" >
-                                <ScrollViewer Height="130" Width="268">
-                            <ItemsControl x:Name="stackPatientNotes" ItemsSource="{Binding Notes}" HorizontalAlignment="Left" VerticalAlignment="Top" ItemTemplate="{StaticResource NoteItemTemplate}" ItemsPanel="{StaticResource NoteItemsPanelTemplate}" />
-                                </ScrollViewer>
-                            </StackPanel>
+                        <Button Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, 
+                        Path=DataContext.CreateNote}" CommandParameter="{Binding Path=AppointmentId}">Add Note</Button>
+                        <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible">
+                            <ItemsControl ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Visible" x:Name="stackPatientNotes" ItemsSource="{Binding Notes}" HorizontalAlignment="Left" VerticalAlignment="Top" ItemTemplate="{StaticResource NoteItemTemplate}" ItemsPanel="{StaticResource NoteItemsPanelTemplate}" />
+                        </ScrollViewer>
+                    </StackPanel>
                         </ScrollViewer>
                     </Expander>
                 </DockPanel>

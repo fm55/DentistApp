@@ -22,4 +22,8 @@ namespace DentistApp.UI
     public interface IPatientViewModel : IViewModel
     {
     }
+
+    public interface IPatientTeethViewModel : IViewModel
+    {
+    }
 }

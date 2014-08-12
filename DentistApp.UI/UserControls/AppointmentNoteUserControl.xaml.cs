@@ -21,7 +21,7 @@ namespace DentistApp.UI.UserControls
     /// <summary>
     /// Interaction logic for NoteUserControl.xaml
     /// </summary>
-    public partial class NoteUserControl : UserControl
+    public partial class AppointmentNoteUserControl : UserControl
     {
         public bool ShouldDelete()
         {
@@ -45,16 +45,17 @@ namespace DentistApp.UI.UserControls
             }
         }
 
-        public NoteUserControl()
+        public AppointmentNoteUserControl()
         {
             var nm = new NoteViewModel();
             nm.RaiseClosed += new EventHandler(nm_RaiseClosed);
             InitializeComponent();
+            this.MethodDataContext = new NotesViewModel();
             //this.DataContext = nm;
            
         }
 
-        public NoteUserControl(NoteViewModel nm)
+        public AppointmentNoteUserControl(NoteViewModel nm)
         {
             nm.RaiseClosed += new EventHandler(nm_RaiseClosed);
             InitializeComponent();
@@ -94,5 +95,7 @@ namespace DentistApp.UI.UserControls
             }
         }
 
+
+        public object MethodDataContext { get; set; }
     }
 }

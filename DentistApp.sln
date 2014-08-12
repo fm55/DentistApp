@@ -24,6 +24,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{30B655
 		.nuget\packages.config = .nuget\packages.config
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. UI Layer", "1. UI Layer", "{AD407951-D4C6-46F7-9710-6E73E66FAD20}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Business And Controller Layer", "2. Business And Controller Layer", "{C952508E-F095-4B89-BB26-F219E3AFB535}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3. Data Layer", "3. Data Layer", "{C7F945B6-A784-4EFD-A3FB-DCB6D9B4185D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4. Tests Layer", "4. Tests Layer", "{F05302F0-C40A-48F3-BCD2-3E9A4F253111}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = DentistApp.vsmdi
@@ -90,5 +98,12 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A8B315C1-C42E-44AF-A492-C5AD583D12A7} = {AD407951-D4C6-46F7-9710-6E73E66FAD20}
+		{765709C7-F9B9-42EE-BEA0-377D3F042E4A} = {C952508E-F095-4B89-BB26-F219E3AFB535}
+		{1EB56118-80F5-4AF7-BD55-C4F2222D2BCB} = {C952508E-F095-4B89-BB26-F219E3AFB535}
+		{0DE6DB33-0871-4C87-8027-07ABC56AE60E} = {C7F945B6-A784-4EFD-A3FB-DCB6D9B4185D}
+		{BD129135-2939-4C4D-B811-5D21C71BEB91} = {F05302F0-C40A-48F3-BCD2-3E9A4F253111}
 	EndGlobalSection
 EndGlobal

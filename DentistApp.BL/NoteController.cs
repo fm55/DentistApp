@@ -11,12 +11,10 @@ namespace DentistApp.BL
     public class NoteController
     {
         IGenericDataRepository<Note> NoteRepository { get; set; }
-        public PatientController PatientController { get; set; }
 
         public NoteController()
         {
             NoteRepository = new GenericDataRepository<Note>();
-            PatientController = new PatientController();
         }
 
         public NoteController(IGenericDataRepository<Note> noteRepository)
@@ -28,12 +26,10 @@ namespace DentistApp.BL
         {
             if (Note.NoteId == 0)
             {
-                Note.EntityState = EntityState.Added;
                 NoteRepository.Add(Note);
             }
             else
             {
-                Note.EntityState = EntityState.Modified;
                 NoteRepository.Update(Note);
             }
 
@@ -48,46 +44,8 @@ namespace DentistApp.BL
             SetToothId(Note, ToothId);
 
             SetOperationId(Note, OperationId);
-        }
 
-        private void SetOperationId(Note Note, int? OperationId)
-        {
-            if (OperationId == 0)
-            {
-                SaveNote(Note);
-                return;
-            }
-            Note.OperationId = OperationId;
-        }
 
-        private void SetToothId(Note Note, int? ToothId)
-        {
-            if (ToothId == 0)
-            {
-                SaveNote(Note);
-                return;
-            }
-            Note.AppointmentId = ToothId;
-        }
-
-        private void SetAppointmentId(Note Note, int? AppointmentId)
-        {
-            if (AppointmentId == 0)
-            {
-                SaveNote(Note);
-                return;
-            }
-            Note.AppointmentId = AppointmentId;
-        }
-
-        private void SetPatientId(Note Note, int? PatientId)
-        {
-            if (PatientId == 0)
-            {
-                SaveNote(Note);
-                return;
-            }
-            Note.PatientId = PatientId;
             SaveNote(Note);
         }
 
@@ -108,5 +66,90 @@ namespace DentistApp.BL
             NoteRepository.Remove(Note);
 
         }
+
+
+
+        private void SetOperationId(Note Note, int? OperationId)
+        {
+            if (OperationId == 0)
+            {
+                SaveNote(Note);
+                return;
+            }
+            Note.OperationId = OperationId;
+        }
+
+        private void SetToothId(Note Note, int? ToothId)
+        {
+            if (ToothId == 0)
+            {
+                SaveNote(Note);
+                return;
+            }
+            Note.ToothId = ToothId;
+        }
+
+        private void SetAppointmentId(Note Note, int? AppointmentId)
+        {
+            if (AppointmentId == 0)
+            {
+                SaveNote(Note);
+                return;
+            }
+            Note.AppointmentId = AppointmentId;
+        }
+
+        private void SetPatientId(Note Note, int? PatientId)
+        {
+            if (PatientId == 0)
+            {
+                SaveNote(Note);
+                return;
+            }
+            Note.PatientId = PatientId;
+        }
+
+
+        public List<Note> GetNotesForPatient(int patientId)
+        {
+            return NoteRepository.GetList(d => d.PatientId == patientId).ToList();
+        }
+
+        public List<Note> GetNotesForPatientAndTooth(int patientId, int toothId)
+        {
+            return NoteRepository.GetList(d => d.PatientId == patientId && d.ToothId == toothId).ToList();
+        }
+
+
+        public List<Note> GetNotesForAppointment(int appointmentId)
+        {
+            return NoteRepository.GetList(d => d.AppointmentId == appointmentId).ToList();
+        }
+
+        public List<Note> GetNotesForAppointmentAndOperation(int appointmentId, int operationId)
+        {
+            return NoteRepository.GetList(d => d.AppointmentId == appointmentId && d.OperationId == operationId).ToList();
+        }
+
+
+
+        public List<Note> GetNotesForOperation(int operationId)
+        {
+            return NoteRepository.GetList(d => d.OperationId == operationId).ToList();
+        }
+
+
+        public List<Note> GetNotesForTooth(int toothId)
+        {
+            return NoteRepository.GetList(d => d.ToothId == toothId).ToList(); ;
+        }
+
+        public List<Note> GetNotesForSystem()
+        {
+            return NoteRepository.GetList(d => d.AppointmentId == null && d.OperationId == null && d.PatientId == null && d.ToothId == null).ToList();
+        }
+
+
+        
     }
 }

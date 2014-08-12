@@ -13,6 +13,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using DentistApp.UI.ViewModels;
 using DentistApp.DAL;
+using DentistApp.UI.Commands;
+using DentistApp.BL;
 
 namespace DentistApp.UI.UserControls
 {
@@ -21,10 +23,14 @@ namespace DentistApp.UI.UserControls
     /// </summary>
     public partial class AppointmentUserControl : UserControl
     {
+        NoteController NoteController = new NoteController();
        public AppointmentUserControl()
         {
             InitializeComponent();
-           
+            MethodDataContext = new NoteViewModel();
         }
+
+       public event EventHandler RaiseClosed;
+       public object MethodDataContext { get; set; }
     }
 }

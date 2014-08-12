@@ -27,7 +27,7 @@ namespace DentistApp.UI.ViewModels
 
         public bool ShouldDelete()
         {
-            if (MessageBoxResult.No == MessageBox.Show("Are you sure?", "Confirm", MessageBoxButton.YesNoCancel)) return false;
+            if (MessageBoxResult.No == MessageBox.Show("Are you sure?", "Confirm", MessageBoxButton.YesNo)) return false;
             return true;
         }
     }

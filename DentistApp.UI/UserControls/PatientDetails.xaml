@@ -36,7 +36,7 @@
 
     </UserControl.Resources>
     <Grid>
-        <TabControl Margin="5"  Width="Auto" HorizontalAlignment="Left"  Name="tabControl1" VerticalAlignment="Top" Opacity="1" Background="Transparent">
+        <TabControl SelectedIndex="{Binding SelectedTabNumber}" Margin="5"  Width="Auto" HorizontalAlignment="Left"  Name="tabControl1" VerticalAlignment="Top" Opacity="1" Background="Transparent">
             <TabItem Header="Details" Name="tabItem1" Background="Transparent">
 
                 <Grid >
@@ -89,8 +89,8 @@
 
                             <Expander ExpandDirection="Down" IsExpanded="False" Header="Notes"  IsEnabled="{Binding IsExistingPatient}">
                                 <StackPanel Orientation="Vertical">
-                                        <Button Command="{Binding Path=AddNoteForPatient}" Width="104">Add Note</Button>
-                                        <ItemsControl x:Name="stackPatientNotes" ItemsSource="{Binding PatientNotes}" HorizontalAlignment="Left" Margin="0,8,0,0" VerticalAlignment="Top"
+                                    <Button Command="{Binding CreateNoteForPatient}" CommandParameter="{Binding Path=SelectedPatient.PatientId}">Add Note</Button>
+                                    <ItemsControl x:Name="stackPatientNotes" ItemsSource="{Binding PatientNotes}" HorizontalAlignment="Left" Margin="0,8,0,0" VerticalAlignment="Top"
                                           ItemTemplate="{StaticResource NoteItemTemplate}"                 
                                           ItemsPanel="{StaticResource NoteItemsPanelTemplate}"/>
                                     </StackPanel>
@@ -164,6 +164,7 @@
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Description" Binding="{Binding Description}"/>
                                     <DataGridTextColumn Header="Amount" Binding="{Binding Amount}"/>
+                                    <DataGridTextColumn Header="Date" Binding="{Binding DateCreated}"/>
                                 </DataGrid.Columns>
                             </DataGrid>
                         </DockPanel>

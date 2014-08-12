@@ -9,13 +9,11 @@ namespace DentistApp.BL
 {
     public class OperationController
     {
-        PatientController PatientController { get; set; }
-
         IGenericDataRepository<Operation> OperationRepository {get;set;}
         public OperationController()
         {
             OperationRepository = new GenericDataRepository<Operation>();
-            PatientController = new PatientController();
+            
         }
 
         public OperationController(IGenericDataRepository<Operation> operationRepository)
@@ -53,18 +51,6 @@ namespace DentistApp.BL
             OperationRepository.Remove(operation);
 
         }
-
-
-        public IEnumerable<Operation> GetOperationsOfPatientAndTooth(int patientId, int toothId)
-        {
-            var patient = PatientController.Get(patientId);
-            var SelectedToothAppointments = patient.Appointments.Select(d => d.Teeth.Where(t => t.Teeth.ToothId == toothId)).SelectMany(i => i).ToList();
-            
-            return SelectedToothAppointments.Select(o => o.Appointment.Operation.Select(i => i.Operation)).SelectMany(i => i).Where(o=>o.IsDeleted==false);
-
-        }
-
-
 
     }
 }

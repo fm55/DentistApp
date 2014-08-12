@@ -12,20 +12,26 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using DentistApp.UI.ViewModels;
+using Microsoft.Practices.Unity;
+using Microsoft.Practices.Prism.Events;
 
 namespace DentistApp.UI.Frames
 {
     /// <summary>
     /// Interaction logic for Operations.xaml
     /// </summary>
-    public partial class Appointments : Page
+    public partial class Notes : Page
     {
-        public object MethodDataContext { get; set; }
-        public Appointments()
+        public Notes(IUnityContainer unityContainer, IEventAggregator eventAggregator)
         {
             InitializeComponent();
-            this.DataContext = new AppointmentViewModel();
-            MethodDataContext = new NotesViewModel();
+            this.DataContext = new NotesViewModel(unityContainer, eventAggregator);
+        }
+
+        public Notes()
+        {
+            // TODO: Complete member initialization
+            this.DataContext = new NotesViewModel();
         }
     }
 }

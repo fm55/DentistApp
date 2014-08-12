@@ -30,6 +30,9 @@ namespace DentistApp.UI.ViewModels
             else if (o.Equals("Home"))
                 SelectedPage = new HomePage(_container, _eventAggregator);
 
+            else if (o.Equals("Notes"))
+                SelectedPage = new Notes(_container, _eventAggregator);
+
             else SelectedPage = new Patients(_container.Resolve<IPatientViewModel>()); ;
             RaisePropertyChanged("SelectedPage");
             _eventAggregator.GetEvent<SelectedMenuItemEvent>().Publish(SelectedPage);           

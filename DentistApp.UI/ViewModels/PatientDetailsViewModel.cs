@@ -52,7 +52,7 @@ namespace DentistApp.UI.ViewModels
         public Boolean IsExistingPatient { get; set; }
         private IEventAggregator _eventAggregator;
         public ObservableCollection<Appointment> PatientAppointments { get; set; }
-        public ObservableCollection<NoteViewModel> PatientNotes { get; set; }
+        public ObservableCollection<Note> PatientNotes { get; set; }
         public ObservableCollection<Operation> PatientOperations { get; set; }
         public ObservableCollection<Tooth> PatientTeeth { get; set; }
         public double AmountToPay { get; set; }
@@ -61,7 +61,6 @@ namespace DentistApp.UI.ViewModels
         AppointmentController AppointmentController { get; set; }
         NoteController NoteController { get; set; }
         public string SearchText { get; set; }
-        ObservableCollection<Appointment> Appointments { get; set; }
         private Patient _selectedPatient;
         public bool OnlyNotFullyPaid { get; set; }
         public DateTime? Start { get; set; }
@@ -88,8 +87,8 @@ namespace DentistApp.UI.ViewModels
         private void GetAmountDetails(Patient patient)
         {
             if (patient == null || patient.PatientId == 0) return;
-            AmountToPay = PatientController.TotalAmountToPay(patient.PatientId);
-            AmountPaid = PatientController.TotalAmountPaid(patient.PatientId);
+            AmountToPay = PatientController.GetTotalAmountToPay(patient.PatientId);
+            AmountPaid = PatientController.GetTotalAmountPaid(patient.PatientId);
             RaisePropertyChanged("AmountToPay");
             RaisePropertyChanged("AmountPaid");
         }
@@ -160,22 +159,33 @@ namespace DentistApp.UI.ViewModels
             Reset();
         }
 
+        Window noteWindow;
         public void addNoteForPatient(object context)
         {
             SelectedPatient.EntityState = EntityState.Modified;
-            Note n = new Note()
+            var vm = new CreateNoteUserControl(new NoteViewModel(new Note { PatientId = SelectedPatient.PatientId }));
+            vm.RaiseClosed += new EventHandler(viewModel_RaisedClosed);
+            noteWindow = new Window
             {
-                Description = "Click on Edit to change description",
-                EntityState = EntityState.Added,
-                PatientId = SelectedPatient.PatientId
+                Title = "New Note",
+                Content = vm,
+                SizeToContent = SizeToContent.WidthAndHeight,
+                ResizeMode = ResizeMode.NoResize
             };
-            NoteController.SaveNote(n);
+
+            noteWindow.ShowDialog();
+
             SelectedPatient = PatientController.Get(SelectedPatient.PatientId);
-            var thisNotes = new ObservableCollection<Note>(PatientController.GetPatientNotes(SelectedPatient.PatientId));
+            var thisNotes = new ObservableCollection<Note>(NoteController.GetNotesForPatient(SelectedPatient.PatientId));
 
 
-            PatientNotes = new ObservableCollection<NoteViewModel>(thisNotes.Select(note => new NoteViewModel(note)).ToList());
+            PatientNotes = thisNotes;
             RaisePropertyChanged("PatientNotes");
+        }
+
+        void nuc_RaiseClosed(object sender, EventArgs e)
+        {
+            noteWindow.Close();
         }
         
         private void deletePatient()
@@ -209,18 +219,71 @@ namespace DentistApp.UI.ViewModels
 
         }
 
+        Window window;
         public void createAppointment(object o)
         {
-
-            Window window = new Window
+            var viewModel = new CreateAppointmentUserControl(SelectedPatient);
+            viewModel.RaisedClosed += new EventHandler(viewModel_RaisedClosed);
+            window = new Window
             {
                 Title = "Create Appointment",
-                Content = new CreateAppointmentUserControl(SelectedPatient),
+                Content = viewModel,
                 SizeToContent = SizeToContent.WidthAndHeight,
                 ResizeMode = ResizeMode.NoResize
             };
-
+            
             window.ShowDialog();
+        }
+
+        Window editWindow;
+        public ICommand EditAppointment
+        {
+            get
+            {
+                return new DelegateCommand((object o) =>
+                {
+
+                    var vm = new CreateAppointmentUserControl(SelectedPatient, o as Appointment);
+                    vm.RaisedClosed += new EventHandler(viewModel_RaisedClosed);
+                    editWindow = new Window
+                    {
+                        Title = "Edit Appointment",
+                        Content = vm,
+                        SizeToContent = SizeToContent.WidthAndHeight,
+                        ResizeMode = ResizeMode.NoResize
+                    };
+
+                    editWindow.ShowDialog();
+                    var apps = AppointmentController.GetAppointmentsOfPatient(SelectedPatient.PatientId);
+                    PatientAppointments = new ObservableCollection<Appointment>(apps.OrderByDescending(d => d.StartTime));
+                    SetNotes();
+                    RaisePropertyChanged("PatientAppointments");
+                },
+                (object o) =>
+                {
+                    return true;
+                });
+            }
+        }
+
+        private void SetNotes()
+        {
+            foreach (var appointment in PatientAppointments)
+            {
+                appointment.Notes = NoteController.GetNotesForAppointment(appointment.AppointmentId);
+            }
+        }
+        void viewModel_RaisedClosed(object sender, EventArgs e)
+        {
+            if (window!=null)
+                window.Close();
+            if (editWindow != null)
+                editWindow.Close();
+             
+            var apps = AppointmentController.GetAppointmentsOfPatient(SelectedPatient.PatientId);
+            PatientAppointments = new ObservableCollection<Appointment>(apps.OrderByDescending(d => d.StartTime));
+            SetNotes();
+            RaisePropertyChanged("PatientAppointments");
         }
 
         private void DeletePatientCallback(Patient p)
@@ -229,6 +292,7 @@ namespace DentistApp.UI.ViewModels
         }
         private void savePatient(object context)
         {
+            if (!Validate()) return;
             PatientController.Save(SelectedPatient);
             //this is called when the button is clicked
             var patients = PatientController.List(SearchText);
@@ -236,6 +300,17 @@ namespace DentistApp.UI.ViewModels
             _eventAggregator.GetEvent<ReloadPatientsEvent>().Publish(true);
             RaisePropertyChanged("Patients");
             Reset();
+        }
+
+        private bool Validate()
+        {
+            if (string.IsNullOrWhiteSpace(SelectedPatient.FirstName) || string.IsNullOrWhiteSpace(SelectedPatient.LastName))
+            {
+                MessageBox.Show("First and last name cannot be empty");
+                return false;
+            }
+
+            return true;
         }
 
         private bool canCallSearchPatients(object context)
@@ -290,6 +365,8 @@ namespace DentistApp.UI.ViewModels
 
         void worker_DoWork(object sender, DoWorkEventArgs e)
         {
+            AppointmentController ac = new BL.AppointmentController();
+            NoteController nc = new BL.NoteController();
             var patientId = (int)e.Argument;
             ProgressVisibility = "Show";
             ProgressValue = 60;
@@ -297,20 +374,16 @@ namespace DentistApp.UI.ViewModels
             RaisePropertyChanged("ProgressValue");
 
             SelectedPatientFullObject = PatientController.Get(patientId);
-            PatientAppointments = new ObservableCollection<Appointment>(PatientController.GetPatientAppointments(patientId, OnlyNotFullyPaid, Start, End));
 
-            var thisNotes = new ObservableCollection<Note>(PatientController.GetPatientNotes(patientId));
+            PatientAppointments = new ObservableCollection<Appointment>(ac.GetAppointmentsOfPatientDuringTime(patientId, OnlyNotFullyPaid, Start, End).OrderByDescending(d => d.StartTime));
+            SetNotes();
+            var thisNotes = new ObservableCollection<Note>(nc.GetNotesForPatient(patientId));
             var notes = thisNotes.Select(note => new NoteViewModel(note)).ToList();
-            PatientNotes = new ObservableCollection<NoteViewModel>(notes);
+            PatientNotes = new ObservableCollection<Note>(thisNotes);
 
             var ops = new List<Operation>();
 
-            List<List<OperationAppointment>> operations = SelectedPatientFullObject.Appointments.Select(d => d.Operation).ToList();
-            foreach (List<OperationAppointment> o in operations)
-            {
-                ops.AddRange(o.Select(d => d.Operation));
-            }
-            PatientOperations = new ObservableCollection<Operation>(PatientController.GetPatientOperations(patientId));
+            PatientOperations = new ObservableCollection<Operation>(PatientController.GetOperationsOfPatient(patientId).OrderByDescending(o => o.DateCreated));
 
 
             ProgressValue = 100;
@@ -320,7 +393,6 @@ namespace DentistApp.UI.ViewModels
             
 
 
-            //PatientTeeth = new ObservableCollection<Tooth>(fullPatient.Teeth);
             RaisePropertyChanged("PatientAppointments");
             RaisePropertyChanged("PatientNotes");
             RaisePropertyChanged("PatientOperations");
@@ -329,6 +401,7 @@ namespace DentistApp.UI.ViewModels
             GetAmountDetails(SelectedPatientFullObject);
         }
 
+        
 
         public ICommand SearchAppointments
         {
@@ -336,9 +409,7 @@ namespace DentistApp.UI.ViewModels
             {
                 return new DelegateCommand((object o) =>
                 {
-                    PatientAppointments = new ObservableCollection<Appointment>(PatientController.GetPatientAppointments(SelectedPatient.PatientId, OnlyNotFullyPaid, Start, End));
-                    Appointments = new ObservableCollection<Appointment>(PatientAppointments.OrderByDescending(d => d.StartTime));
-                    RaisePropertyChanged("PatientAppointments");
+                    RefreshAppointments();
                 },
                 (object o) =>
                 {
@@ -347,6 +418,15 @@ namespace DentistApp.UI.ViewModels
             }
         }
 
+        private void RefreshAppointments()
+        {
+            AppointmentController ac = new BL.AppointmentController();
+            PatientAppointments = new ObservableCollection<Appointment>(ac.GetAppointmentsOfPatientDuringTime(SelectedPatient.PatientId, OnlyNotFullyPaid, Start, End).OrderByDescending(d => d.StartTime));
+            PatientAppointments = new ObservableCollection<Appointment>(PatientAppointments.OrderByDescending(d => d.StartTime).OrderByDescending(d => d.StartTime));
+            SetNotes();
+            RaisePropertyChanged("PatientAppointments");
+        }
+        public int SelectedTabNumber { get; set; }
         private void SubscribeToEvents()
         {
             _eventAggregator.GetEvent<SelectedPatientItemEvent>().Subscribe((patient) =>
@@ -354,6 +434,8 @@ namespace DentistApp.UI.ViewModels
                 SelectedPatient = patient;
                 IsExistingPatient = true;
                 RaisePropertyChanged("IsExistingPatient");
+                SelectedTabNumber = 0;
+                RaisePropertyChanged("SelectedTabNumber");
             });
         }
 
@@ -361,6 +443,108 @@ namespace DentistApp.UI.ViewModels
         private void Reset()
         {
             SelectedPatient = new Patient();
+        }
+
+
+
+        public event EventHandler RaiseClosed;
+
+
+        public ICommand Save
+        {
+            get
+            {
+                return new DelegateCommand((object o) =>
+                {
+                    var note = o as Note;
+
+                    NoteController.SaveNote(note);
+                    if (RaiseClosed != null)
+                        RaiseClosed(null, null);
+                }
+                );
+            }
+        }
+
+        private Note SelectedNote { get; set; }
+        public ICommand Delete
+        {
+            get
+            {
+                return new DelegateCommand((object o) =>
+                {
+                    if (!ShouldDelete()) return;
+                    var note = o as Note;
+                    NoteController.Delete(note);
+                    var thisNotes = new ObservableCollection<Note>(NoteController.GetNotesForPatient(SelectedPatient.PatientId));
+                    PatientNotes = thisNotes;
+                    RaisePropertyChanged("PatientNotes");
+                });
+            }
+        }
+
+         public ICommand CreateNoteForPatient
+        {
+            get
+            {
+                return new DelegateCommand((object o) =>
+                {
+                    var note = new Note { PatientId = SelectedPatient.PatientId };
+                    var vm = new CreateNoteUserControl(new NoteViewModel(note));
+                    vm.RaiseClosed += new EventHandler(vm_RaisedClosed);
+                    noteWindow = new Window
+                    {
+                        Title = "New Note",
+                        Content = vm,
+                        SizeToContent = SizeToContent.WidthAndHeight,
+                        ResizeMode = ResizeMode.NoResize
+                    };
+
+                    noteWindow.ShowDialog();
+                    PatientNotes = new ObservableCollection<Note>(NoteController.GetNotesForPatient(SelectedPatient.PatientId));
+                    RaisePropertyChanged("PatientNotes");
+
+                },
+                (object o) =>
+                {
+                    return true;
+                });
+            }
+        }
+
+
+         public ICommand CreateNote
+         {
+             get
+             {
+                 return new DelegateCommand((object o) =>
+                 {
+                     var note = new Note { AppointmentId = (int)o };
+                     var vm = new CreateNoteUserControl(new NoteViewModel(note));
+                     vm.RaiseClosed += new EventHandler(vm_RaisedClosed);
+                     noteWindow = new Window
+                     {
+                         Title = "New Note",
+                         Content = vm,
+                         SizeToContent = SizeToContent.WidthAndHeight,
+                         ResizeMode = ResizeMode.NoResize
+                     };
+
+                     noteWindow.ShowDialog();
+                     RefreshAppointments();
+
+                 },
+                 (object o) =>
+                 {
+                     return true;
+                 });
+             }
+         }
+
+        void vm_RaisedClosed(object sender, EventArgs e)
+        {
+            if (noteWindow != null)
+                noteWindow.Close();
         }
     }
 }

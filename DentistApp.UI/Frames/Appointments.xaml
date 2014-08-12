@@ -4,11 +4,11 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       mc:Ignorable="d" 
-      d:DesignHeight="496" d:DesignWidth="967"
       xmlns:dg="http://schemas.microsoft.com/wpf/2008/toolkit"
       xmlns:appointments="clr-namespace:DentistApp.UI.Converters"
       xmlns:appointment="clr-namespace:DentistApp.UI.UserControls"
-      xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
+      xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit" ScrollViewer.HorizontalScrollBarVisibility="Visible"
+      ScrollViewer.VerticalScrollBarVisibility="Visible"
 	Title="Appointments">
     <Page.Resources>
         <appointments:OperationsToListConverter x:Key="OperationsConverter"/>
@@ -24,8 +24,8 @@
 
         <DataTemplate x:Key="NoteItemTemplate">
             <StackPanel>
-                <appointment:NoteUserControl Margin="15" 
- HorizontalAlignment="Left" VerticalAlignment="Top"></appointment:NoteUserControl>
+                <appointment:AppointmentNoteUserControl Margin="15" 
+ HorizontalAlignment="Left" VerticalAlignment="Top"></appointment:AppointmentNoteUserControl>
             </StackPanel>
         </DataTemplate>
         <ItemsPanelTemplate x:Key="NoteItemsPanelTemplate">
@@ -35,22 +35,20 @@
     <Grid>
         <StackPanel Orientation="Vertical" Width="Auto"
               HorizontalAlignment="Left"   >
-            <StackPanel Orientation="Horizontal">
-                <Button Command="{Binding CreateAppointment}" Content="Create Appointment"/>
-            </StackPanel>
             <Border BorderThickness="2" CornerRadius="5" BorderBrush="Black">
                 <StackPanel Orientation="Horizontal">
-                    <toolkit:DateTimePicker Value="{Binding Path=Start}" FontFamily="Calibri" Width="320" />
-                    <Label Content=" To " FontFamily="Calibri" />
-                    <toolkit:DateTimePicker Value="{Binding Path=End, Mode=TwoWay}" FontFamily="Calibri" Width="320"/>
-                    <Button Command="{Binding SearchAppointments}" Content="Search"/>
-
+                    <Button Command="{Binding CreateAppointment}" Content="New Appointment" Width="Auto" Margin="10"/>
+                    <toolkit:DateTimePicker Value="{Binding Path=Start}" FontFamily="Calibri" Width="220" Margin="10"/>
+                    <Label Content=" To " FontFamily="Calibri" Margin="10"/>
+                    <toolkit:DateTimePicker Value="{Binding Path=End, Mode=TwoWay}" FontFamily="Calibri" Width="220" Margin="10"/>
                     <CheckBox  IsChecked="{Binding OnlyNotFullyPaid}"  Content="Only Unpaid"/>
+                    <Button Command="{Binding SearchAppointments}" Content="Search" Margin="10"/>
+
                 </StackPanel>
             </Border>
-            <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Visible">
+            <ScrollViewer Height="500"  ScrollViewer.HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" >
                 
-                <ItemsControl x:Name="stackPatientAppointments" ItemsSource="{Binding Path=Appointments}" HorizontalAlignment="Left" Margin="0,8,0,0" VerticalAlignment="Top"
+                <ItemsControl  x:Name="stackPatientAppointments" ItemsSource="{Binding Path=Appointments}" HorizontalAlignment="Left" Margin="0,8,0,0" VerticalAlignment="Top"
                           ItemTemplate="{StaticResource AppointmentItemTemplate}"                 
                           ItemsPanel="{StaticResource AppointmentItemsPanelTemplate}"/>
             </ScrollViewer>

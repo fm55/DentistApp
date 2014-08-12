@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="DentistApp.UI.UserControls.NoteUserControl"
+﻿<UserControl x:Class="DentistApp.UI.UserControls.CreateNoteUserControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -8,13 +8,10 @@
     <Grid>
             <StackPanel Orientation="Vertical">
                 <WrapPanel Margin="10" Orientation="Horizontal">
-                    <Button FontWeight="Bold" Width="Auto" Background="#13000000" BorderBrush="#00000000" CommandParameter="{Binding}" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.Save}">Save</Button>
-                    <Button FontWeight="Bold" Width="Auto" Background="#13000000" BorderBrush="#00000000" CommandParameter="{Binding}" Command="{Binding  RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}},Path=DataContext.Delete}">Delete</Button>
+                    <Button FontWeight="Bold" Width="Auto" Background="#13000000" BorderBrush="#00000000" Command="{Binding Path=Save}" CommandParameter="{Binding}">Save</Button>
                 </WrapPanel>
                 <Label x:Name="txtCreatedAt" FontFamily="Calibri" FontStyle="Italic" FontWeight="Bold" Content="{Binding Path=DateCreated}" Height="30" />
-                <TextBox BorderBrush="Transparent" Name="txtDescription" Background="#13000000" Text="{Binding Path=Description}" FontFamily="Calibri" FontStyle="Italic" Height="124" >
-                   
-
+                <TextBox BorderBrush="Transparent" Background="#C6F7F7B3" Name="txtDescription" Text="{Binding Description}" FontFamily="Calibri" FontStyle="Italic" Height="124" >
                 </TextBox>
             </StackPanel>
         </Grid>

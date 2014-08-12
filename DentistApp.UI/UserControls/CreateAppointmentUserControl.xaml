@@ -23,75 +23,81 @@
     </ItemsPanelTemplate>
 
     </UserControl.Resources>
-
-        <Border x:Name="OuterBorder" Background="#FFDBEDF5" CornerRadius="1" Height="Auto"  Width="689" BorderBrush="#FF060000">
+    <ScrollViewer BorderBrush="red" BorderThickness="5" Height="500">
+        <Border x:Name="OuterBorder" Background="#FFDBEDF5" CornerRadius="10" BorderBrush="#FF060000">
             <DockPanel>
-            <Button DockPanel.Dock="Top" Content="Create" Command="{Binding CreateAppointment}"/>
-            <Label DockPanel.Dock="Top" Content="{Binding Path=StartTime, Converter={StaticResource DateConverter}}" FontFamily="Bookman Old Style" FontSize="32" FontWeight="Bold" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-            <ScrollViewer DockPanel.Dock="Top">
-                <StackPanel Orientation="Vertical">
-                    <StackPanel Orientation="Horizontal">
-                        <toolkit:DateTimePicker Value="{Binding Path=NewAppointment.StartTime}" FontFamily="Calibri" Width="320" />
-                        <Label Content=" To " FontFamily="Calibri" />
-                        <toolkit:DateTimePicker Value="{Binding Path=NewAppointment.EndTime}" FontFamily="Calibri" Width="320"/>
+                <ScrollViewer DockPanel.Dock="Top">
+                    <StackPanel Orientation="Vertical">
+                        <StackPanel Orientation="Horizontal">
+                            <Button DockPanel.Dock="Top" Content="Save" Command="{Binding CreateAppointment}" Margin="10"/>
+                            <Label DockPanel.Dock="Top" Margin="10" Content="{Binding Path=StartTime, Converter={StaticResource DateConverter}}" FontFamily="Bookman Old Style" FontSize="32" FontWeight="Bold" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+
+                            <toolkit:DateTimePicker Margin="10" Value="{Binding Path=NewAppointment.StartTime}" FontFamily="Calibri" Width="320" />
+                            <Label Content=" To " Margin="10" FontFamily="Calibri" />
+                            <toolkit:DateTimePicker  Margin="10" Value="{Binding Path=NewAppointment.EndTime}" FontFamily="Calibri" Width="320"/>
+                        </StackPanel>
+                        <TextBox Text="{Binding Path=NewAppointment.Description}" FontFamily="Calibri" Height="74"  VerticalAlignment="Top" FontStyle="Italic" />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock HorizontalAlignment="Left" Margin="10"   Text="Amount To Pay" VerticalAlignment="Top" />
+                            <TextBox HorizontalAlignment="Left" Margin="10"  VerticalAlignment="Top" Text="{Binding Path=NewAppointment.AmountToPay}" Width="189" />
+
+                            <TextBlock HorizontalAlignment="Left"  Margin="10"  Text="Amount Paid" VerticalAlignment="Top" />
+                            <TextBox HorizontalAlignment="Left" Margin="10"  VerticalAlignment="Top" Text="{Binding Path=NewAppointment.AmountPaid}" Width="187" />
+                        </StackPanel>
                     </StackPanel>
-                    <TextBox Text="{Binding Path=NewAppointment.Description}" FontFamily="Calibri" Height="74"  VerticalAlignment="Top" FontStyle="Italic" />
-                    <TextBlock HorizontalAlignment="Left"   Text="Amount To Pay" VerticalAlignment="Top" />
-                    <TextBox HorizontalAlignment="Left" VerticalAlignment="Top" Text="{Binding Path=NewAppointment.AmountToPay}" Width="189" />
+                </ScrollViewer>
+                <Expander DockPanel.Dock="Top"  Header="Details" VerticalAlignment="Top">
+                    <WrapPanel Orientation="Horizontal" Width="700">
+                        <ListBox ItemsSource="{Binding Operations}" SelectionMode="Multiple" Width="220" ScrollViewer.VerticalScrollBarVisibility="Visible" Height="350">
 
-                    <TextBlock HorizontalAlignment="Left"   Text="Amount Paid" VerticalAlignment="Top" />
-                    <TextBox HorizontalAlignment="Left" VerticalAlignment="Top" Text="{Binding Path=NewAppointment.AmountPaid}" Width="187" />
-                </StackPanel>
-            </ScrollViewer>
-            <Expander DockPanel.Dock="Top"  Header="Details" VerticalAlignment="Top">
-                <WrapPanel Orientation="Horizontal" Width="700">
-                    <ListBox ItemsSource="{Binding Operations}" SelectionMode="Multiple" Width="220">
+                            <ListBox.Resources>
+                                <Style TargetType="{x:Type ListBoxItem}">
+                                    <Setter Property="IsSelected" Value="{Binding Path=IsSelected, Mode=TwoWay}"/>
+                                </Style>
 
-                        <ListBox.Resources>
-                            <Style TargetType="{x:Type ListBoxItem}">
-                                <Setter Property="IsSelected" Value="{Binding Path=IsSelected, Mode=TwoWay}"/>
-                            </Style>
+                                <DataTemplate DataType="{x:Type appointmentViewModel:SelectableOperation}" >
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label Margin="2" Content="{Binding Operation.Description}"/>
+                                        <Label Margin="2" Content="{Binding Operation.Amount}"/>
+                                        <Label Margin="2" Visibility="Hidden"  Content="{Binding IsSelected}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.Resources>
 
-                            <DataTemplate DataType="{x:Type appointmentViewModel:SelectableOperation}">
-                                <StackPanel Orientation="Horizontal">
-                                    <Label Margin="2" Content="{Binding Operation.Description}"/>
-                                    <Label Margin="2"  Content="{Binding IsSelected}"/>
-                                </StackPanel>
-                            </DataTemplate>
-                        </ListBox.Resources>
+                        </ListBox>
+                        <DataGrid  Height="350" Width="220" ItemsSource="{Binding Path=Patients}" SelectionMode="Single" Visibility="{Binding HidePatient}" SelectedItem="{Binding SelectedPatient, Mode=TwoWay}" ScrollViewer.VerticalScrollBarVisibility="Visible">
+                        </DataGrid>
+                        <ListBox ItemsSource="{Binding Teeth}" SelectionMode="Multiple" Width="220" Visibility="{Binding HideTeeth}" ScrollViewer.VerticalScrollBarVisibility="Visible"  Height="350">
 
-                    </ListBox>
-                    <DataGrid Width="220" ItemsSource="{Binding Path=Patients}" SelectionMode="Single" Visibility="{Binding HidePatient}" SelectedItem="{Binding SelectedPatient, Mode=TwoWay}">
-                    </DataGrid>
-                    <ListBox ItemsSource="{Binding Teeth}" SelectionMode="Multiple" Width="220" Visibility="{Binding HideTeeth}">
+                            <ListBox.Resources>
+                                <Style TargetType="{x:Type ListBoxItem}">
+                                    <Setter Property="IsSelected" Value="{Binding Path=IsSelected, Mode=TwoWay}"/>
+                                </Style>
 
-                        <ListBox.Resources>
-                            <Style TargetType="{x:Type ListBoxItem}">
-                                <Setter Property="IsSelected" Value="{Binding Path=IsSelected, Mode=TwoWay}"/>
-                            </Style>
+                                <DataTemplate DataType="{x:Type appointmentViewModel:SelectableTooth}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label  Margin="2" Content="{Binding Tooth.Name}"/>
+                                        <Label Margin="2" Visibility="Hidden"   Content="{Binding IsSelected}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.Resources>
 
-                            <DataTemplate DataType="{x:Type appointmentViewModel:SelectableTooth}">
-                                <StackPanel Orientation="Horizontal">
-                                    <Label  Margin="2" Content="{Binding Tooth.Name}"/>
-                                    <Label Margin="2"  Content="{Binding IsSelected}"/>
-                                </StackPanel>
-                            </DataTemplate>
-                        </ListBox.Resources>
+                        </ListBox>
+                    </WrapPanel>
 
-                    </ListBox>
-                </WrapPanel>
-                
-            </Expander>
-            <Expander DockPanel.Dock="Bottom" Header="Notes" VerticalAlignment="Top">
-                        <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch">
-                            <StackPanel Name="StackScroll" Background="Wheat" >
-                                <ScrollViewer Height="130" Width="268">
-                                    <ItemsControl x:Name="stackPatientNotes" ItemsSource="{Binding Notes}" HorizontalAlignment="Left" VerticalAlignment="Top" ItemTemplate="{StaticResource NoteItemTemplate}" ItemsPanel="{StaticResource NoteItemsPanelTemplate}" />
-                                </ScrollViewer>
-                            </StackPanel>
-                        </ScrollViewer>
-                    </Expander>
-            
-        </DockPanel>
+                </Expander>
+                <Expander  Height="350" DockPanel.Dock="Bottom" Header="Notes" VerticalAlignment="Top" Visibility="Collapsed">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch">
+                        <StackPanel Name="StackScroll" Background="Wheat" >
+                            <ScrollViewer Height="130" Width="268">
+                                <ItemsControl x:Name="stackPatientNotes" ItemsSource="{Binding Notes}" HorizontalAlignment="Left" VerticalAlignment="Top" ItemTemplate="{StaticResource NoteItemTemplate}" ItemsPanel="{StaticResource NoteItemsPanelTemplate}" />
+                            </ScrollViewer>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Expander>
+
+            </DockPanel>
+
         </Border>
+    </ScrollViewer>
 </UserControl>

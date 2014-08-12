@@ -9,11 +9,27 @@ using System.Windows.Input;
 using Microsoft.Practices.Prism.Commands;
 using System.Windows;
 using DentistApp.UI.UserControls;
+using Microsoft.Practices.Prism.Events;
+using Microsoft.Practices.Unity;
+using DentistApp.UI.Modules;
+using DentistApp.UI.Events;
 
 namespace DentistApp.UI.ViewModels
 {
-    public class PatientTeethViewModel : BaseViewModel
+    public class PatientTeethViewModel : BaseViewModel, IPatientTeethViewModel
     {
+        IEventAggregator _eventAggregator;
+        public PatientTeethViewModel()
+        {
+            _eventAggregator = Microsoft.Practices.ServiceLocation.ServiceLocator.Current.GetInstance<IEventAggregator>();
+            _eventAggregator.GetEvent<SelectedPatientItemEvent>().Subscribe((patient) =>
+            {
+                SelectedPatient = patient;
+                RaisePropertyChanged("IsExistingPatient");
+            });
+        }
+
+        IUnityContainer _container { get; set; }
         public NoteController NoteController = new NoteController();
         public AppointmentController AppointmentsController = new AppointmentController();
         public ToothController ToothController = new ToothController();
@@ -23,6 +39,7 @@ namespace DentistApp.UI.ViewModels
         public Patient SelectedPatient { get; set; }
 
         public ObservableCollection<Model.Operation> Operations { get; set; }
+        
         public ICommand AddNote
         {
             get
@@ -38,14 +55,6 @@ namespace DentistApp.UI.ViewModels
             }
         }
 
-
-        internal void Update()
-        {
-            RaisePropertyChanged("Notes");
-            RaisePropertyChanged("Appointments");
-            RaisePropertyChanged("Operations");
-        }
-
         public ICommand CreateAppointment
         {
             get
@@ -54,14 +63,15 @@ namespace DentistApp.UI.ViewModels
             }
 
         }
-
+        Window window;
         public void createAppointment()
         {
-
-            Window window = new Window
+            var vm = new CreateAppointmentUserControl(SelectedPatient, SelectedTooth);
+            vm.RaisedClosed += new EventHandler(vm_RaisedClosed);
+            window = new Window
             {
                 Title = "Create Appointment",
-                Content = new CreateAppointmentUserControl(SelectedPatient, SelectedTooth),
+                Content = vm,
                 SizeToContent = SizeToContent.WidthAndHeight,
                 ResizeMode = ResizeMode.NoResize
             };
@@ -69,6 +79,32 @@ namespace DentistApp.UI.ViewModels
             window.ShowDialog();
 
         }
+
+        void vm_RaisedClosed(object sender, EventArgs e)
+        {
+            if (window!=null)
+                window.Close();
+
+            if (editWindow != null)
+                editWindow.Close();
+
+            if (noteWindow != null)
+                noteWindow.Close();
+
+            var apps = AppointmentsController.GetAppointmentsOfPatientAndTooth(SelectedPatient.PatientId, SelectedTooth.ToothId);
+            Appointments = new ObservableCollection<Appointment>(apps.OrderByDescending(d => d.StartTime));
+            SetNotes();
+            RaisePropertyChanged("Appointments");
+        }
+
+        private void SetNotes()
+        {
+            foreach (var appointment in Appointments)
+            {
+                appointment.Notes = NoteController.GetNotesForAppointment(appointment.AppointmentId);
+            }
+        }
+
         public ICommand DeleteAppointment
         {
             get
@@ -77,9 +113,112 @@ namespace DentistApp.UI.ViewModels
                 {
                     if (!ShouldDelete()) return;
                     AppointmentsController.Delete(AppointmentsController.List((int)o).First());
-                    var apps = AppointmentsController.List();
+                    var apps = AppointmentsController.GetAppointmentsOfPatientAndTooth(SelectedPatient.PatientId, SelectedTooth.ToothId);
                     Appointments = new ObservableCollection<Appointment>(apps.OrderByDescending(d => d.StartTime));
+                    SetNotes();
                     RaisePropertyChanged("Appointments");
+                },
+                (object o) =>
+                {
+                    return true;
+                });
+            }
+        }
+
+        Window editWindow;
+        public ICommand EditAppointment
+        {
+            get
+            {
+                return new DentistApp.UI.Commands.DelegateCommand((object o) =>
+                {
+
+                    var vm = new CreateAppointmentUserControl(SelectedPatient, SelectedTooth, o as Appointment);
+                    vm.RaisedClosed += new EventHandler(vm_RaisedClosed);
+                    editWindow = new Window
+                    {
+                        Title = "Edit Appointment",
+                        Content = vm,
+                        SizeToContent = SizeToContent.WidthAndHeight,
+                        ResizeMode = ResizeMode.NoResize
+                    };
+
+                    editWindow.ShowDialog();
+                    var apps = AppointmentsController.GetAppointmentsOfPatientAndTooth(SelectedPatient.PatientId, SelectedTooth.ToothId);
+                    Appointments = new ObservableCollection<Appointment>(apps.OrderByDescending(d => d.StartTime));
+                    SetNotes();
+                    RaisePropertyChanged("Appointments");
+                },
+                (object o) =>
+                {
+                    return true;
+                });
+            }
+        }
+
+
+        public void Update()
+        {
+            RaisePropertyChanged("Notes");
+            RaisePropertyChanged("Appointments");
+            RaisePropertyChanged("Operations");
+        }
+
+        Window noteWindow;
+        public ICommand CreateNoteForTooth
+        {
+            get
+            {
+                return new DentistApp.UI.Commands.DelegateCommand((object o) =>
+                {
+                    var note = new Note { PatientId = SelectedPatient.PatientId, ToothId = SelectedTooth.ToothId };
+                    var vm = new CreateNoteUserControl(new NoteViewModel(note));
+                    vm.RaiseClosed += new EventHandler(vm_RaisedClosed);
+                    noteWindow = new Window
+                    {
+                        Title = "New Note",
+                        Content = vm,
+                        SizeToContent = SizeToContent.WidthAndHeight,
+                        ResizeMode = ResizeMode.NoResize
+                    };
+
+                    noteWindow.ShowDialog();
+                    Notes = new ObservableCollection<NoteViewModel>(ToothController.GetNotesOfToothAndPatient(SelectedTooth.ToothId, SelectedPatient.PatientId).Select(i => new NoteViewModel(i)));
+                    RaisePropertyChanged("PatientNotes");
+                    Update();
+
+                },
+                (object o) =>
+                {
+                    return true;
+                });
+            }
+        }
+
+
+        public ICommand CreateNote
+        {
+            get
+            {
+                return new DentistApp.UI.Commands.DelegateCommand((object o) =>
+                {
+                    var note = new Note { AppointmentId = (int)o };
+                    var vm = new CreateNoteUserControl(new NoteViewModel(note));
+                    vm.RaiseClosed += new EventHandler(vm_RaisedClosed);
+                    noteWindow = new Window
+                    {
+                        Title = "New Note",
+                        Content = vm,
+                        SizeToContent = SizeToContent.WidthAndHeight,
+                        ResizeMode = ResizeMode.NoResize
+                    };
+
+                    noteWindow.ShowDialog();
+                    var apps = AppointmentsController.GetAppointmentsOfPatientAndTooth(SelectedPatient.PatientId, SelectedTooth.ToothId);
+                    Appointments = new ObservableCollection<Appointment>(apps.OrderByDescending(d => d.StartTime));
+                    SetNotes();
+                    Update();
+
                 },
                 (object o) =>
                 {

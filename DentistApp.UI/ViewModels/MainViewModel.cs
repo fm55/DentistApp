@@ -33,6 +33,10 @@ namespace DentistApp.UI.ViewModels
             else if (o.Equals("Operations"))
                 SelectedPage = new Operations();
 
+            else if (o.Equals("Notes"))
+                SelectedPage = new Notes();
+
+
             else SelectedPage = new Patients(_container.Resolve<IPatientViewModel>());
             RaisePropertyChanged("SelectedPage");
         }

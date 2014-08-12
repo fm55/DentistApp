@@ -43,9 +43,6 @@ namespace DentistApp.UI.ViewModels
                 RaisePropertyChanged("SelectedPatient");
                 if (_eventAggregator!=null)
                     _eventAggregator.GetEvent<SelectedPatientItemEvent>().Publish(value);
-                // selection changed - do something special
-               // 
-
             }
         }
 

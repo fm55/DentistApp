@@ -164,6 +164,9 @@
     <Compile Include="Frames\Appointments.xaml.cs">
       <DependentUpon>Appointments.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Frames\Notes.xaml.cs">
+      <DependentUpon>Notes.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Frames\Homepage.xaml.cs">
       <DependentUpon>Homepage.xaml</DependentUpon>
     </Compile>
@@ -173,6 +176,13 @@
     <Compile Include="Requests\GenericInteractionRequest.cs" />
     <Compile Include="Requests\GenericInteractionRequestEventArgs.cs" />
     <Compile Include="Requests\IGenericInteractionRequest.cs" />
+    <Compile Include="UserControls\AppointmentNoteUserControl.xaml.cs">
+      <DependentUpon>AppointmentNoteUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\CreateNoteUserControl.xaml.cs">
+      <DependentUpon>CreateNoteUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\NotesViewModel.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="ViewModels\NoteViewModel.cs" />
     <Compile Include="ViewModels\PatientTeethViewModel.cs" />
@@ -221,6 +231,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Frames\Notes.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Frames\Homepage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -263,6 +277,14 @@
     <Page Include="UserControls\AppointmentUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\AppointmentNoteUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\CreateNoteUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="UserControls\CreateAppointmentUserControl.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -11,6 +11,13 @@ namespace DentistApp.DAL.DAL
 {
     public class GenericDataRepository<T> : IGenericDataRepository<T> where T : BaseEntity
     {
+        private DbSet<T> dbSet;
+
+        public GenericDataRepository()
+        {
+            
+        }
+
         public IList<T> GetAll(params Expression<Func<T, object>>[] navigationProperties)
         {
             Func<T, bool> exp = t => t.IsDeleted == false;
@@ -81,17 +88,13 @@ namespace DentistApp.DAL.DAL
 
         public int Add(T item)
         {
+            if (item == null) return -1;
             using (var context = new DentistDbContext())
             {
-                DbSet<T> dbSet = context.Set<T>();
-
+                dbSet = context.Set<T>();
+                
                 item.EntityState = EntityState.Added;
                 dbSet.Add(item);
-                foreach (DbEntityEntry<IEntity> entry in context.ChangeTracker.Entries<IEntity>())
-                {
-                    IEntity entity = entry.Entity;
-                    entry.State = GetEntityState(entity.EntityState);
-                }
 
                 return context.SaveChanges();
             }
@@ -103,20 +106,21 @@ namespace DentistApp.DAL.DAL
 
             using (var context = new DentistDbContext())
             {
-
-                context.Configuration.ValidateOnSaveEnabled = true;
-                DbSet<T> dbSet = context.Set<T>();
+              
                 foreach (T item in items)
                 {
-                    item.EntityState = EntityState.Modified;
-                    dbSet.Add(item); 
-                    
-                    //foreach (DbEntityEntry<IEntity> entry in context.ChangeTracker.Entries<IEntity>())
-                    //{
-                        //IEntity entity = entry.Entity;
-                        //entry.State = GetEntityState(entity.EntityState);
-                    //}
-
+                    if (item == null) return -1;
+                    dbSet = context.Set<T>();
+                    try
+                    {
+                        dbSet.Attach(item);
+                    }
+                    catch (Exception)
+                    {
+                        
+                        dbSet.Add(item);
+                    }
+                    context.Entry(item).State = System.Data.Entity.EntityState.Modified;
                 }
 
                 context.SaveChanges();
@@ -130,11 +134,14 @@ namespace DentistApp.DAL.DAL
         {
             using (var context = new DentistDbContext())
             {
+                
                 foreach (var item in items)
                 {
+                    if (item == null) return -1;
+                    dbSet = context.Set<T>();
                     item.EntityState = EntityState.Modified;
                     item.IsDeleted = true;
-                    context.Entry(item).State = GetEntityState(item.EntityState);
+                    context.Entry(item).State = System.Data.Entity.EntityState.Modified;
                 }
                 return context.SaveChanges();
             }

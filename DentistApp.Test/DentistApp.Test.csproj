@@ -51,6 +51,7 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
@@ -60,13 +61,15 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DAL.Tests\NoteRepositoryTest.cs" />
-    <Compile Include="DAL.Tests\OperationRepositoryTest.cs" />
-    <Compile Include="DAL.Tests\AppointmentRepositoryTest.cs" />
-    <Compile Include="DAL.Tests\PatientRepositoryTest.cs" />
-    <Compile Include="OperationControllerTest.cs" />
+    <Compile Include="IntegrationTests\AppointmentControllerTests.cs" />
+    <Compile Include="IntegrationTests\PatientControllerTests.cs" />
+    <Compile Include="NoteControllerTest.cs" />
+    <Compile Include="UnitTests\BaseTestClass.cs" />
+    <Compile Include="UnitTests\NoteRepositoryTest.cs" />
+    <Compile Include="UnitTests\OperationRepositoryTest.cs" />
+    <Compile Include="UnitTests\AppointmentRepositoryTest.cs" />
+    <Compile Include="UnitTests\PatientRepositoryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PatientControllerTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DentistApp.BL\DentistApp.BL.csproj">
@@ -86,6 +89,7 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

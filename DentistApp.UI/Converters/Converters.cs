@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Data;
 using DentistApp.Model;
+using DentistApp.BL;
 
 namespace DentistApp.UI.Converters
 {
@@ -25,13 +26,32 @@ namespace DentistApp.UI.Converters
    {
        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
        {
-           var s = (List<OperationAppointment>)value;
-
-
-           var a = s.Select(d => d.Operation).ToList<Operation>().Select(e=>e.Description).ToArray<string>();
+           var appId = (int)value;
+           AppointmentController ac = new AppointmentController();
+           var operations = ac.GetOperationsOfAppointment(appId);
+           var a = operations.Select(e => e.Description + " (" + e.Amount + ")").ToArray<string>();
            
            
-           return string.Join(",", a);
+           return string.Join(", \n", a);
+       }
+
+       public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+       {
+           throw new NotSupportedException();
+       }
+   }
+
+   public class TeethConverter : IValueConverter
+   {
+       public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+       {
+           var appId = (int)value;
+           AppointmentController ac = new AppointmentController();
+           var teeth = ac.GetTeethOfAppointment(appId);
+           var a = teeth.Select(e => e.Name).ToArray<string>();
+
+
+           return string.Join(", \n", a);
        }
 
        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

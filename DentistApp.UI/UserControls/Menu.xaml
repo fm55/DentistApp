@@ -11,6 +11,7 @@
                 <Button Width="200" Command="{Binding Navigate}" CommandParameter="Patients" Content="Patients Management" Background="White"/>
                 <Button Command="{Binding Navigate}" Width="200" CommandParameter="Appointments" Content="Appointments Mangement" Background="White"/>
                 <Button Command="{Binding Navigate}" Width="200" CommandParameter="Operations" Content="Operations Management" Background="White"/>
+                <Button Command="{Binding Navigate}" Width="200" CommandParameter="Notes" Content="System Notes" Background="White"/>
             </StackPanel>
         </Border>
     </Grid>

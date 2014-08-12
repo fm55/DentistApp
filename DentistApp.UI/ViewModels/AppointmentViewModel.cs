@@ -22,11 +22,20 @@ namespace DentistApp.UI.ViewModels
         /////properties////
         //list of appointments
         public ObservableCollection<Appointment> Appointments { get; set; }
-        public ObservableCollection<Note> PatientNotes { get; set; }
+        public ObservableCollection<Note> AppointmenNotes { get; set; }
         public AppointmentController AppointmentsController {get;set;}
+        public NoteController NoteController = new NoteController();
         public bool OnlyNotFullyPaid { get; set; }
         public DateTime? Start { get; set; }
         public DateTime? End { get; set; }
+
+        private void SetNotes()
+        {
+            foreach (var a in Appointments)
+            {
+                a.Notes = NoteController.GetNotesForAppointment(a.AppointmentId);
+            }
+        }
 
         public ICommand SearchAppointments
         {
@@ -36,6 +45,9 @@ namespace DentistApp.UI.ViewModels
                 {
                     var apps = AppointmentsController.List(0, OnlyNotFullyPaid, Start, End);
                     Appointments = new ObservableCollection<Appointment>(apps.OrderByDescending(d => d.StartTime));
+
+                    SetNotes();
+
                     RaisePropertyChanged("Appointments");
                 },
                 (object o) =>
@@ -56,6 +68,7 @@ namespace DentistApp.UI.ViewModels
                     AppointmentsController.Delete(AppointmentsController.List((int)o).First());
                     var apps = AppointmentsController.List();
                     Appointments = new ObservableCollection<Appointment>(apps.OrderByDescending(d => d.StartTime));
+                    SetNotes();
                     RaisePropertyChanged("Appointments");
                 },
                 (object o) =>
@@ -75,7 +88,67 @@ namespace DentistApp.UI.ViewModels
 
                     var apps = AppointmentsController.List();
                     Appointments = new ObservableCollection<Appointment>(apps.OrderByDescending(d => d.StartTime));
+                    SetNotes();
                     RaisePropertyChanged("Appointments");
+                },
+                (object o) =>
+                {
+                    return true;
+                });
+            }
+        }
+
+        Window editWindow;
+        public ICommand EditAppointment
+        {
+            get
+            {
+                return new DelegateCommand((object o) =>
+                {
+                    
+                    var vm = new CreateAppointmentUserControl(o as Appointment);
+                    vm.RaisedClosed+=new EventHandler(vm_RaisedClosed);
+                    editWindow = new Window
+                    {
+                        Title = "Edit Appointment",
+                        Content = vm,
+                        SizeToContent = SizeToContent.WidthAndHeight,
+                        ResizeMode = ResizeMode.NoResize
+                    };
+
+                    editWindow.ShowDialog();
+                    var apps = AppointmentsController.List();
+                    Appointments = new ObservableCollection<Appointment>(apps.OrderByDescending(d => d.StartTime));
+                    SetNotes();
+                    RaisePropertyChanged("Appointments");
+                },
+                (object o) =>
+                {
+                    return true;
+                });
+            }
+        }
+
+        Window noteWindow;
+        public ICommand CreateNote
+        {
+            get
+            {
+                return new DelegateCommand((object o) =>
+                {
+                    var note = new Note{AppointmentId = (int)o};
+                    var vm = new CreateNoteUserControl(new NoteViewModel(note));
+                    vm.RaiseClosed += new EventHandler(vm_RaisedClosed);
+                    noteWindow = new Window
+                    {
+                        Title = "New Note",
+                        Content = vm,
+                        SizeToContent = SizeToContent.WidthAndHeight,
+                        ResizeMode = ResizeMode.NoResize
+                    };
+
+                    noteWindow.ShowDialog();
+                    _items = Items;
                 },
                 (object o) =>
                 {
@@ -94,6 +167,7 @@ namespace DentistApp.UI.ViewModels
                     AppointmentsController = new AppointmentController();
                     var apps = AppointmentsController.List(0, OnlyNotFullyPaid, Start, End);
                     Appointments = new ObservableCollection<Appointment>(apps.OrderByDescending(d=>d.StartTime));
+                    SetNotes();
                     RaisePropertyChanged("Appointments");
                     _items = System.Windows.Data.CollectionViewSource.GetDefaultView(apps.ToList<Appointment>());
                     _items.GroupDescriptions.Add(new PropertyGroupDescription("StartTime"));
@@ -115,20 +189,34 @@ namespace DentistApp.UI.ViewModels
 
         }
 
+        Window window;
         public void createAppointment(object o)
         {
-
-            Window window = new Window
+            var vm = new CreateAppointmentUserControl();
+            vm.RaisedClosed+=new EventHandler(vm_RaisedClosed);
+            window = new Window
             {
                 Title = "Create Appointment",
-                Content = new CreateAppointmentUserControl(),
+                Content = vm,
                 SizeToContent = SizeToContent.WidthAndHeight,
                 ResizeMode = ResizeMode.NoResize
             };
 
             window.ShowDialog();
             Appointments = new ObservableCollection<Appointment>(AppointmentsController.List(0, OnlyNotFullyPaid, Start, End).OrderByDescending(d => d.StartTime));
+            SetNotes();
             RaisePropertyChanged("Appointments");
+        }
+
+        void vm_RaisedClosed(object sender, EventArgs e)
+        {
+            if (editWindow!=null)
+                editWindow.Close();
+            if (window != null)
+                window.Close();
+
+            if (noteWindow != null)
+                noteWindow.Close();
         }
         #endregion
 
@@ -155,8 +243,41 @@ namespace DentistApp.UI.ViewModels
             RaisePropertyChanged("Start");
             RaisePropertyChanged("End");
         }
-       
 
+        public event EventHandler RaiseClosed;
+
+
+        public ICommand Save
+        {
+            get
+            {
+                return new DelegateCommand((object o) =>
+                {
+                    var note = o as Note;
+
+                    NoteController.SaveNote(note);
+                    if (RaiseClosed != null)
+                        RaiseClosed(null, null);
+                }
+                );
+            }
+        }
+
+        private Note SelectedNote { get; set; }
+        public ICommand Delete
+        {
+            get
+            {
+                return new DelegateCommand((object o) =>
+                {
+                    if (!ShouldDelete()) return;
+                    var note = o as Note;
+                    NoteController.Delete(note);
+                    SetNotes();
+                    RaisePropertyChanged("Notes");
+                });
+            }
+        }
 
 
         

@@ -15,10 +15,13 @@ namespace DentistApp.DAL
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
         public string Description { get; set; }
-        
+        [NotMapped]
         public Patient Patient { get; set; }
+        public int PatientId { get; set; }
+        [NotMapped]
         public List<OperationAppointment> Operation { get; set; }
         public decimal Amount { get; set; }
+        [NotMapped]
         public List<TeethAppointment> Teeth { get; set; }
         public double AmountToPay { get; set; }
         public double AmountPaid { get; set; }

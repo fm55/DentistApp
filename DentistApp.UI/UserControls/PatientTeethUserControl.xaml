@@ -58,8 +58,9 @@
         </ItemsPanelTemplate>
         <DataTemplate x:Key="OperationItemTemplate">
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="{Binding Description}"/>
-                <TextBlock Text="{Binding Amount}"/>
+                <TextBlock  Margin="10" Text="{Binding Description}"/>
+                <TextBlock  Margin="10" Text="{Binding Amount}"/>
+                <TextBlock  Margin="10" Text="{Binding DateCreated}"/>
             </StackPanel>
         </DataTemplate>
         <ItemsPanelTemplate x:Key="AppointmentItemsPanelTemplate">
@@ -97,46 +98,45 @@
 
             <Image Source="/Resources/Teeth.jpg" Grid.RowSpan="2" Grid.ColumnSpan="18" Height="287" VerticalAlignment="Top"/>
 
-            <ContentControl Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="1" Grid.Column="1" Grid.Row="0" Margin="14,0,0,0" />
-            <ContentControl Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="2" Grid.Column="2" Grid.Row="0" />
-            <ContentControl Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="3" Grid.Column="3" Grid.Row="0" Margin="3,0,0,0" />
-            <ContentControl Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="4" Grid.Column="4" Grid.Row="0" />
-            <ContentControl Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="5" Grid.Column="5" Grid.Row="0" Margin="0,0,3,0" />
-            <ContentControl Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="6" Grid.Column="6" Grid.Row="0" Margin="0,0,2,0" />
-            <ContentControl Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="7" Grid.Column="7" Grid.Row="0" />
-            <ContentControl Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="8" Grid.Column="8" Grid.Row="0" Margin="0,0,7,0" />
-            <ContentControl Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="9" Grid.Column="9" Grid.Row="0" Margin="10,0,0,0" />
-            <ContentControl Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="10" Grid.Column="10" Grid.Row="0" />
-            <ContentControl Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="11" Grid.Column="11" Grid.Row="0" />
-            <ContentControl Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="12" Grid.Column="12" Grid.Row="0" />
-            <ContentControl Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="13" Grid.Column="13" Grid.Row="0" />
-            <ContentControl Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="14" Grid.Column="14" Grid.Row="0" />
-            <ContentControl Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="15" Grid.Column="15" Grid.Row="0" />
-            <ContentControl Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="16" Grid.Column="16" Grid.Row="0" />
-
-            <ContentControl Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="17" Grid.Column="1" Grid.Row="1" Margin="0,0,4,0" />
-            <ContentControl Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="18" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Margin="62,0,2,0" />
-            <ContentControl Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="19" Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2" Margin="52,0,2,0" />
-            <ContentControl Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="20" Grid.Column="4" Grid.Row="1" />
-            <ContentControl Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="21" Grid.Column="5" Grid.Row="1" Margin="4,0,0,0"  />
-            <ContentControl Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="22" Grid.Column="6" Grid.Row="1" Margin="7,0,24,0" Grid.ColumnSpan="2" />
-            <ContentControl Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="23" Grid.Column="7" Grid.Row="1" Margin="11,0,33,0" Grid.ColumnSpan="2" />
-            <ContentControl Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="24" Grid.Column="8" Grid.Row="1" Margin="10,0,5,0" />
-            <ContentControl Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="25" Grid.Column="9" Grid.Row="1" Margin="10,0,3,0" />
-            <ContentControl Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="26" Grid.Column="9" Grid.Row="1" Grid.ColumnSpan="2" Margin="40,0,5,0" />
-            <ContentControl Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="27" Grid.Column="11" Grid.Row="1" Margin="0,0,3,0" />
-            <ContentControl Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="28" Grid.Column="12" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,0,31,0" />
-            <ContentControl Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="29" Grid.Column="13" Grid.Row="1" Margin="4,0,48,0" Grid.ColumnSpan="2" />
-            <ContentControl Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="30" Grid.Column="14" Grid.Row="1" Margin="10,0,47,0" Grid.ColumnSpan="2" />
-            <ContentControl Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="31" Grid.Column="15" Grid.Row="1" Margin="9,0,47,0" Grid.ColumnSpan="2" />
-            <ContentControl Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="32" Grid.Column="16" Grid.Row="1" Margin="9,0,23,0" Grid.ColumnSpan="2" />
+            <ContentControl Name="Tooth1"  Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="1" Grid.Column="1" Grid.Row="0" Margin="14,0,0,0" />
+            <ContentControl Name="Tooth2" Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="2" Grid.Column="2" Grid.Row="0" />
+            <ContentControl Name="Tooth3" Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="3" Grid.Column="3" Grid.Row="0" Margin="3,0,0,0" />
+            <ContentControl Name="Tooth4" Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="4" Grid.Column="4" Grid.Row="0" />
+            <ContentControl Name="Tooth5" Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="5" Grid.Column="5" Grid.Row="0" Margin="0,0,3,0" />
+            <ContentControl Name="Tooth6" Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="6" Grid.Column="6" Grid.Row="0" Margin="0,0,2,0" />
+            <ContentControl Name="Tooth7" Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="7" Grid.Column="7" Grid.Row="0" />
+            <ContentControl Name="Tooth8" Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="8" Grid.Column="8" Grid.Row="0" Margin="0,0,7,0" />
+            <ContentControl Name="Tooth9" Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="9" Grid.Column="9" Grid.Row="0" Margin="10,0,0,0" />
+            <ContentControl Name="Tooth10" Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="10" Grid.Column="10" Grid.Row="0" />
+            <ContentControl Name="Tooth11" Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="11" Grid.Column="11" Grid.Row="0" />
+            <ContentControl Name="Tooth12" Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="12" Grid.Column="12" Grid.Row="0" />
+            <ContentControl Name="Tooth13" Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="13" Grid.Column="13" Grid.Row="0" />
+            <ContentControl Name="Tooth14" Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="14" Grid.Column="14" Grid.Row="0" />
+            <ContentControl Name="Tooth15" Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="15" Grid.Column="15" Grid.Row="0" />
+            <ContentControl Name="Tooth16" Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="16" Grid.Column="16" Grid.Row="0" />
+            <ContentControl Name="Tooth17" Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="17" Grid.Column="1" Grid.Row="1" Margin="0,0,4,0" />
+            <ContentControl Name="Tooth18" Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="18" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Margin="62,0,2,0" />
+            <ContentControl Name="Tooth19" Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="19" Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2" Margin="52,0,2,0" />
+            <ContentControl Name="Tooth20" Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="20" Grid.Column="4" Grid.Row="1" />
+            <ContentControl Name="Tooth21" Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="21" Grid.Column="5" Grid.Row="1" Margin="4,0,0,0"  />
+            <ContentControl Name="Tooth22" Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="22" Grid.Column="6" Grid.Row="1" Margin="7,0,24,0" Grid.ColumnSpan="2" />
+            <ContentControl Name="Tooth23" Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="23" Grid.Column="7" Grid.Row="1" Margin="11,0,33,0" Grid.ColumnSpan="2" />
+            <ContentControl Name="Tooth24" Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="24" Grid.Column="8" Grid.Row="1" Margin="10,0,5,0" />
+            <ContentControl Name="Tooth25" Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="25" Grid.Column="9" Grid.Row="1" Margin="10,0,3,0" />
+            <ContentControl Name="Tooth26" Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="26" Grid.Column="9" Grid.Row="1" Grid.ColumnSpan="2" Margin="40,0,5,0" />
+            <ContentControl Name="Tooth27" Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="27" Grid.Column="11" Grid.Row="1" Margin="0,0,3,0" />
+            <ContentControl Name="Tooth28" Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="28" Grid.Column="12" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,0,31,0" />
+            <ContentControl Name="Tooth29" Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="29" Grid.Column="13" Grid.Row="1" Margin="4,0,48,0" Grid.ColumnSpan="2" />
+            <ContentControl Name="Tooth30" Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="30" Grid.Column="14" Grid.Row="1" Margin="10,0,47,0" Grid.ColumnSpan="2" />
+            <ContentControl Name="Tooth31" Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="31" Grid.Column="15" Grid.Row="1" Margin="9,0,47,0" Grid.ColumnSpan="2" />
+            <ContentControl Name="Tooth32" Style="{StaticResource MouseOverContentControlStyle}" MouseDown="toothGotFocus" ToolTip="32" Grid.Column="16" Grid.Row="1" Margin="9,0,23,0" Grid.ColumnSpan="2" />
 </Grid>
         
-        <WrapPanel Orientation="Vertical">
+        <StackPanel Orientation="Vertical" Name="ToothDetailsTab">
            
                 <Expander Header="Notes" HorizontalAlignment="Stretch" Width="1020">
                 <DockPanel LastChildFill="True">
-                    <Button DockPanel.Dock="Top" Command="{Binding Path=AddNote}" Width="137">Add Note</Button>
+                    <Button DockPanel.Dock="Top" Command="{Binding Path=CreateNoteForTooth}" Width="137">Add Note</Button>
                     <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Visible">
                         <ItemsControl ItemsSource="{Binding Notes}" HorizontalAlignment="Left" Margin="0,8,0,0" VerticalAlignment="Top" ItemTemplate="{StaticResource NoteItemTemplate}" ItemsPanel="{StaticResource NoteItemsPanelTemplate}" />
                     </ScrollViewer>
@@ -144,14 +144,14 @@
             </Expander>
            
             <Expander Header="Appointments" HorizontalAlignment="Stretch">
-                    <DockPanel LastChildFill="True">
-                            <Button Command="{Binding Path=CreateAppointment}" DockPanel.Dock="Top" Width="186">Add Appointment</Button>
-                    <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Visible">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
+                    <Button HorizontalAlignment="Left" Command="{Binding Path=CreateAppointment}" Width="186">Add Appointment</Button>
+                    <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Visible" Width="800" >
                         <ItemsControl ItemsSource="{Binding Appointments}" HorizontalAlignment="Left" VerticalAlignment="Top"
                           ItemTemplate="{StaticResource AppointmentItemTemplate}"                 
                           ItemsPanel="{StaticResource AppointmentItemsPanelTemplate}"/>
                     </ScrollViewer>
-                </DockPanel>
+                </StackPanel>
             </Expander>
                 
                
@@ -164,7 +164,7 @@
                     </ScrollViewer>
                 </DockPanel>
                 </Expander>
-        </WrapPanel>
+        </StackPanel>
 
 
 

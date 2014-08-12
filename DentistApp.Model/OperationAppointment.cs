@@ -12,9 +12,13 @@ namespace DentistApp.Model
     {
         [Key]
         public int OperationAppointmentId { get; set; }
-        
+        [NotMapped]
         public Operation Operation { get; set; }
+        [NotMapped]
         public Appointment Appointment { get; set; }
+
+        public int OperationId { get; set; }
+        public int AppointmentId { get; set; }
         public double Amount { get; set; }
     }
 }

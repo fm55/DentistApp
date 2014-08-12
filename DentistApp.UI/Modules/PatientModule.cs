@@ -14,12 +14,14 @@ namespace DentistApp.UI.Modules
 {
     public class PatientModule:IModule
     {
+        static IUnityContainer _container1;
         IUnityContainer _container;
         IRegionManager _manager;
         public PatientModule(IUnityContainer container, IRegionManager manager)
         {
             _container = container;
             _manager = manager;
+            _container1 = _container;
         }
 
         public void Initialize()
@@ -29,10 +31,17 @@ namespace DentistApp.UI.Modules
             _container.RegisterType<IPatientListViewModel, PatientListViewModel>();
             _container.RegisterType<IPatientDetailsViewModel, PatientDetailsViewModel>();
             _container.RegisterType<IPatientViewModel, PatientViewModel>();
-
+            _container.RegisterType<IPatientTeethViewModel, PatientTeethViewModel>();
             _manager.RegisterViewWithRegion("PatientList", typeof(PatientList));
             _manager.RegisterViewWithRegion("PatientDetails", typeof(PatientDetails));
             
+        }
+
+
+
+        public static IUnityContainer GetContainer()
+        {
+            return _container1;
         }
     }
 }

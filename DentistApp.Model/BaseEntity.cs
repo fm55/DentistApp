@@ -25,6 +25,7 @@ namespace DentistApp.DAL
         public DateTime DateCreated { get; set; }
         public bool IsDeleted { get; set; }
         public User CurrentUser { get; set; }
+        [NotMapped]
         public List<Note> Notes { get; set; }
 
         public BaseEntity()

@@ -74,6 +74,19 @@ namespace DentistApp.UI.ViewModels
         public PatientController PatientController { get; set; }
         #endregion
 
+        public event EventHandler RaiseClosed;
+        private Appointment appointment;
+        private bool Validate()
+        {
+            if (SelectedPatient == null)
+            {
+                MessageBox.Show("Please select a patient or create a new patient");
+                return false ;
+            }
+            return true;
+        }
+
+
         #region Commands
         /////commands/////
         private ICommand createAppointment {get;set;}
@@ -82,7 +95,13 @@ namespace DentistApp.UI.ViewModels
             get
             {
                 return new DelegateCommand((object o) => {
-                    AppointmentController.SaveAppointment(NewAppointment, SelectedPatient, Operations.Where(p => p.IsSelected == true).Select(t => t.Operation).ToList(), Teeth.Where(t => t.IsSelected == true).Select(to => to.Tooth).ToList(), Notes.ToList()); 
+
+                    if (!Validate()) { return; };
+
+                    AppointmentController.SaveAppointment(NewAppointment, SelectedPatient, Operations.Where(p => p.IsSelected == true).Select(t => t.Operation).ToList(), Teeth.Where(t => t.IsSelected == true).Select(to => to.Tooth).ToList(), new List<Note>());
+                    if (RaiseClosed != null)
+                        RaiseClosed(this, EventArgs.Empty);
+
                 }, (object b) => { return true; });
             }
         }
@@ -137,6 +156,32 @@ namespace DentistApp.UI.ViewModels
             RaisePropertyChanged("Patients");
         }
 
+        public CreateAppointmentViewModel(Patient SelectedPatient, Appointment Appointment)
+        {
+            HidePatient = "Collapsed";
+            ToothController = new BL.ToothController();
+            OperationController = new BL.OperationController();
+            AppointmentController = new BL.AppointmentController();
+            PatientController = new BL.PatientController();
+            this.SelectedPatient = SelectedPatient;
+            NewAppointment = Appointment;
+            var teeth = ToothController.List();
+
+            var teethOfApp = AppointmentController.GetTeethOfAppointment(NewAppointment.AppointmentId);
+            this.Teeth = new ObservableCollection<SelectableTooth>(teeth.Select(i => new SelectableTooth() { Tooth = i, IsSelected = teethOfApp.FirstOrDefault(t => t.ToothId == i.ToothId) != null }));
+
+            var operations = OperationController.List();
+            var operationsOfApp = AppointmentController.GetOperationsOfAppointment(NewAppointment.AppointmentId);
+            this.Operations = new ObservableCollection<SelectableOperation>(operations.Select(i => new SelectableOperation() { Operation = i, IsSelected = operationsOfApp.FirstOrDefault(o => o.OperationId == i.OperationId) != null }));
+            
+            Patients = new ObservableCollection<Patient>(PatientController.List());
+            Notes = new ObservableCollection<Note>();
+            RaisePropertyChanged("NewAppointment");
+            RaisePropertyChanged("Teeth");
+            RaisePropertyChanged("Operations");
+            RaisePropertyChanged("Patients");
+        }
+
         public CreateAppointmentViewModel(Patient SelectedPatient, Tooth SelectedTooth)
         {
             // TODO: Complete member initialization
@@ -167,6 +212,63 @@ namespace DentistApp.UI.ViewModels
             RaisePropertyChanged("Operations");
             RaisePropertyChanged("Patients");
 
+        }
+
+        public CreateAppointmentViewModel(Patient SelectedPatient, Tooth SelectedTooth, Appointment Appointment)
+        {
+            // TODO: Complete member initialization
+            HideTeeth = "Hidden";
+            HidePatient = "Collapsed";
+            this.SelectedPatient = SelectedPatient;
+            this.SelectedTooth = SelectedTooth;
+            ToothController = new BL.ToothController();
+            OperationController = new BL.OperationController();
+            AppointmentController = new BL.AppointmentController();
+            PatientController = new BL.PatientController();
+            NewAppointment = Appointment;
+
+
+            var teeth = ToothController.List();
+            var teethOfApp = AppointmentController.GetTeethOfAppointment(NewAppointment.AppointmentId);
+            this.Teeth = new ObservableCollection<SelectableTooth>(teeth.Select(i => new SelectableTooth() { Tooth = i, IsSelected = teethOfApp.FirstOrDefault(t => t.ToothId == i.ToothId) != null }));
+
+            var operations = OperationController.List();
+            var operationsOfApp = AppointmentController.GetOperationsOfAppointment(NewAppointment.AppointmentId);
+            this.Operations = new ObservableCollection<SelectableOperation>(operations.Select(i => new SelectableOperation() { Operation = i, IsSelected = operationsOfApp.FirstOrDefault(o => o.OperationId == i.OperationId) != null }));
+            
+
+            Patients = new ObservableCollection<Patient>(PatientController.List());
+            Notes = new ObservableCollection<Note>();
+            RaisePropertyChanged("NewAppointment");
+            RaisePropertyChanged("Teeth");
+            RaisePropertyChanged("Operations");
+            RaisePropertyChanged("Patients");
+
+        }
+
+        public CreateAppointmentViewModel(Appointment appointment)
+        {
+            // TODO: Complete member initialization
+            NewAppointment = appointment;
+            ToothController = new BL.ToothController();
+            OperationController = new BL.OperationController();
+            AppointmentController = new BL.AppointmentController();
+            PatientController = new BL.PatientController();
+            // TODO: Complete member initialization
+            this.Patients = new ObservableCollection<Patient>(PatientController.List());
+            this.SelectedPatient = PatientController.Get(appointment.PatientId);
+            var teeth = ToothController.List();
+            var teethOfApp = AppointmentController.GetTeethOfAppointment(appointment.AppointmentId);
+            this.Teeth = new ObservableCollection<SelectableTooth>(teeth.Select(i => new SelectableTooth() { Tooth = i, IsSelected = teethOfApp.FirstOrDefault(t => t.ToothId == i.ToothId) != null }));
+
+            var operations = OperationController.List();
+            var operationsOfApp = AppointmentController.GetOperationsOfAppointment(appointment.AppointmentId);
+            this.Operations = new ObservableCollection<SelectableOperation>(operations.Select(i => new SelectableOperation() { Operation = i, IsSelected = operationsOfApp.FirstOrDefault(o => o.OperationId == i.OperationId) != null }));
+            RaisePropertyChanged("Appointment");
+            RaisePropertyChanged("Teeth");
+            RaisePropertyChanged("Operations");
+            RaisePropertyChanged("Patients");
+            
         }
 
 
