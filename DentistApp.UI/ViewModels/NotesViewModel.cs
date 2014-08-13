@@ -114,7 +114,15 @@ namespace DentistApp.UI.ViewModels
         public int? AppointmentId { get; set; }
         public event EventHandler RaiseClosed;
 
-
+        private bool Validate(Note note)
+        {
+            if (string.IsNullOrWhiteSpace(note.Description))
+            {
+                MessageBox.Show("Please enter a description for the note");
+                return false;
+            }
+            return true;
+        }
         public ICommand Save
         {
             get
@@ -122,7 +130,7 @@ namespace DentistApp.UI.ViewModels
                 return new DelegateCommand((object o) =>
             {
                 var note = o as Note;
-
+                if (!Validate(note)) return;
                 NoteController.SaveNote(note);
                 IsReadOnly = true; RaisePropertyChanged("IsReadOnly");
                 if (RaiseClosed != null)

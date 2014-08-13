@@ -74,10 +74,11 @@ namespace DentistApp.UI.ViewModels
             LoadOperations(null);
         }
 
-private void MyDataGrid_RowEditEnding(object sender) 
-{    // Only act on Commit
+        private void MyDataGrid_RowEditEnding(object sender) 
+        {    // Only act on Commit
    
-}
+        }
+
         public void DeleteOperation(object o)
         {
             if (!ShouldDelete()) return;

@@ -28,7 +28,39 @@ namespace DentistApp.UI.ViewModels
                 RaisePropertyChanged("IsExistingPatient");
             });
         }
-
+        public ICommand Delete
+        {
+            get
+            {
+                return new DentistApp.UI.Commands.DelegateCommand((object o) =>
+                {
+                    if (!ShouldDelete()) return;
+                    var nvm = (NoteViewModel)o;
+                    Note note = new Note { NoteId = nvm.NoteId };
+                    NoteController.Delete(note);
+                    var thisNotes = new ObservableCollection<Note>(NoteController.GetNotesForPatientAndTooth(SelectedPatient.PatientId, SelectedTooth.ToothId));
+                    Notes = new ObservableCollection<NoteViewModel>(thisNotes.Select(i => new NoteViewModel(i)));
+                    Update();
+                });
+            }
+        }
+        public ICommand Save
+        {
+            get
+            {
+                return new DentistApp.UI.Commands.DelegateCommand((object o) =>
+                {
+                    var nvm = (NoteViewModel)o;
+                    Note note = new Note { NoteId = nvm.NoteId, Description = nvm.Description, PatientId= SelectedPatient.PatientId, ToothId = SelectedTooth.ToothId };
+                    if (!Validate(note)) return;
+                    NoteController.SaveNote(note);
+                    var thisNotes = new ObservableCollection<Note>(NoteController.GetNotesForPatientAndTooth(SelectedPatient.PatientId, SelectedTooth.ToothId));
+                    Notes = new ObservableCollection<NoteViewModel>(thisNotes.Select(i => new NoteViewModel(i)));
+                    Update();
+                }
+                );
+            }
+        }
         IUnityContainer _container { get; set; }
         public NoteController NoteController = new NoteController();
         public AppointmentController AppointmentsController = new AppointmentController();
@@ -39,7 +71,16 @@ namespace DentistApp.UI.ViewModels
         public Patient SelectedPatient { get; set; }
 
         public ObservableCollection<Model.Operation> Operations { get; set; }
-        
+        private bool Validate(Note note)
+        {
+            if (string.IsNullOrWhiteSpace(note.Description))
+            {
+                MessageBox.Show("Please enter a description for the note");
+                return false;
+            }
+            return true;
+        }
+
         public ICommand AddNote
         {
             get
@@ -48,8 +89,10 @@ namespace DentistApp.UI.ViewModels
                 {
                     SelectedTooth.EntityState = EntityState.Unchanged;
                     SelectedPatient.EntityState = EntityState.Unchanged;
+
                     NoteController.SaveNote(new Note { Description = "Click to edit", ToothId = SelectedTooth.ToothId, PatientId = SelectedPatient.PatientId });
-                    Notes = new ObservableCollection<NoteViewModel>(ToothController.GetNotesOfToothAndPatient(SelectedTooth.ToothId, SelectedPatient.PatientId).Select(i => new NoteViewModel(i)));
+                    var thisNotes = new ObservableCollection<Note>(NoteController.GetNotesForPatientAndTooth(SelectedPatient.PatientId, SelectedTooth.ToothId));
+                    Notes = new ObservableCollection<NoteViewModel>(thisNotes.Select(i => new NoteViewModel(i)));
                     Update();
                 });
             }
@@ -172,6 +215,7 @@ namespace DentistApp.UI.ViewModels
                 return new DentistApp.UI.Commands.DelegateCommand((object o) =>
                 {
                     var note = new Note { PatientId = SelectedPatient.PatientId, ToothId = SelectedTooth.ToothId };
+                    
                     var vm = new CreateNoteUserControl(new NoteViewModel(note));
                     vm.RaiseClosed += new EventHandler(vm_RaisedClosed);
                     noteWindow = new Window

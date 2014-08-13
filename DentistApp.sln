@@ -32,6 +32,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3. Data Layer", "3. Data La
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4. Tests Layer", "4. Tests Layer", "{F05302F0-C40A-48F3-BCD2-3E9A4F253111}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DentistApp.DataLoader", "DentistApp.DataLoader\DentistApp.DataLoader.csproj", "{4F403D3F-267F-4389-9D01-A2E7034EC9B4}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = DentistApp.vsmdi
@@ -95,11 +97,22 @@ Global
 		{BD129135-2939-4C4D-B811-5D21C71BEB91}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{BD129135-2939-4C4D-B811-5D21C71BEB91}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{BD129135-2939-4C4D-B811-5D21C71BEB91}.Release|x86.ActiveCfg = Release|Any CPU
+		{4F403D3F-267F-4389-9D01-A2E7034EC9B4}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{4F403D3F-267F-4389-9D01-A2E7034EC9B4}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{4F403D3F-267F-4389-9D01-A2E7034EC9B4}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{4F403D3F-267F-4389-9D01-A2E7034EC9B4}.Debug|x86.ActiveCfg = Debug|x86
+		{4F403D3F-267F-4389-9D01-A2E7034EC9B4}.Debug|x86.Build.0 = Debug|x86
+		{4F403D3F-267F-4389-9D01-A2E7034EC9B4}.Release|Any CPU.ActiveCfg = Release|x86
+		{4F403D3F-267F-4389-9D01-A2E7034EC9B4}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{4F403D3F-267F-4389-9D01-A2E7034EC9B4}.Release|Mixed Platforms.Build.0 = Release|x86
+		{4F403D3F-267F-4389-9D01-A2E7034EC9B4}.Release|x86.ActiveCfg = Release|x86
+		{4F403D3F-267F-4389-9D01-A2E7034EC9B4}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{4F403D3F-267F-4389-9D01-A2E7034EC9B4} = {0BA4A40A-97AD-4C0E-9009-06D7B21974E4}
 		{A8B315C1-C42E-44AF-A492-C5AD583D12A7} = {AD407951-D4C6-46F7-9710-6E73E66FAD20}
 		{765709C7-F9B9-42EE-BEA0-377D3F042E4A} = {C952508E-F095-4B89-BB26-F219E3AFB535}
 		{1EB56118-80F5-4AF7-BD55-C4F2222D2BCB} = {C952508E-F095-4B89-BB26-F219E3AFB535}

@@ -9,6 +9,7 @@ using DentistApp.DAL;
 using DentistApp.BL;
 using System.Windows.Media;
 using DentistApp.UI.Commands;
+using System.Windows;
 
 namespace DentistApp.UI.ViewModels
 {
@@ -35,13 +36,22 @@ namespace DentistApp.UI.ViewModels
         public ICommand Edit { get{return new DelegateCommand(editNote);}}
         public event EventHandler RaiseClosed;
 
-
+        private bool Validate(Note note)
+        {
+            if (string.IsNullOrWhiteSpace(note.Description))
+            {
+                MessageBox.Show("Please enter a description for the note");
+                return false;
+            }
+            return true;
+        }
         public ICommand Save
         {
             get
             {
                 return new DelegateCommand((object o) =>
             {
+                if (!Validate(new Note { Description = this.Description })) return;
                 NoteController.SaveNote(new Note { NoteId = this.NoteId, Description = this.Description }, this.PatientId, this.OperationId, this.ToothId, this.AppointmentId);
                 IsReadOnly = true; RaisePropertyChanged("IsReadOnly");
                 if (RaiseClosed != null)
