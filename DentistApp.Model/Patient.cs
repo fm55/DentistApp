@@ -20,6 +20,7 @@ namespace DentistApp.DAL
         public string PostCode { get; set; }
         public string City { get; set; }
         public string Country { get; set; }
+        public decimal OverrideTotalAmount { get; set; }
         public List<Appointment> Appointments { get; set; }
         public Patient()
             : base()

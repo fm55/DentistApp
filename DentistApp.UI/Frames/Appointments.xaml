@@ -46,9 +46,9 @@
 
                 </StackPanel>
             </Border>
-            <ScrollViewer Height="500"  ScrollViewer.HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" >
-                
-                <ItemsControl  x:Name="stackPatientAppointments" ItemsSource="{Binding Path=Appointments}" HorizontalAlignment="Left" Margin="0,8,0,0" VerticalAlignment="Top"
+            <ScrollViewer  Height="500"  ScrollViewer.HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" >
+
+                <ItemsControl VirtualizingStackPanel.IsVirtualizing="True" ScrollViewer.CanContentScroll="True" x:Name="stackPatientAppointments" ItemsSource="{Binding Path=Appointments}" HorizontalAlignment="Left" Margin="0,8,0,0" VerticalAlignment="Top"
                           ItemTemplate="{StaticResource AppointmentItemTemplate}"                 
                           ItemsPanel="{StaticResource AppointmentItemsPanelTemplate}"/>
             </ScrollViewer>

@@ -68,9 +68,9 @@
                         <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch">
                             <StackPanel Name="StackScroll" >
                         <Button Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, 
-                        Path=DataContext.CreateNote}" CommandParameter="{Binding Path=AppointmentId}">Add Note</Button>
+                        Path=DataContext.CreateNote}" CommandParameter="{Binding Path=AppointmentId}" Width="100px">Add Note</Button>
                         <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible">
-                            <ItemsControl ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Visible" x:Name="stackPatientNotes" ItemsSource="{Binding Notes}" HorizontalAlignment="Left" VerticalAlignment="Top" ItemTemplate="{StaticResource NoteItemTemplate}" ItemsPanel="{StaticResource NoteItemsPanelTemplate}" />
+                            <ItemsControl VirtualizingStackPanel.IsVirtualizing="True" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Visible" x:Name="stackPatientNotes" ItemsSource="{Binding Notes}" HorizontalAlignment="Left" VerticalAlignment="Top" ItemTemplate="{StaticResource NoteItemTemplate}" ItemsPanel="{StaticResource NoteItemsPanelTemplate}" />
                         </ScrollViewer>
                     </StackPanel>
                         </ScrollViewer>

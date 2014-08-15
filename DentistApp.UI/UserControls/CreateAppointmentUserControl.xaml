@@ -90,7 +90,7 @@
                     <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch">
                         <StackPanel Name="StackScroll" Background="Wheat" >
                             <ScrollViewer Height="130" Width="268">
-                                <ItemsControl x:Name="stackPatientNotes" ItemsSource="{Binding Notes}" HorizontalAlignment="Left" VerticalAlignment="Top" ItemTemplate="{StaticResource NoteItemTemplate}" ItemsPanel="{StaticResource NoteItemsPanelTemplate}" />
+                                <ItemsControl VirtualizingStackPanel.IsVirtualizing="True" ScrollViewer.CanContentScroll="True" x:Name="stackPatientNotes" ItemsSource="{Binding Notes}" HorizontalAlignment="Left" VerticalAlignment="Top" ItemTemplate="{StaticResource NoteItemTemplate}" ItemsPanel="{StaticResource NoteItemsPanelTemplate}" />
                             </ScrollViewer>
                         </StackPanel>
                     </ScrollViewer>

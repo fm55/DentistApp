@@ -28,7 +28,14 @@ namespace DentistApp.UI.ViewModels
         //list of appointments
         public ObservableCollection<Appointment> Appointments { get; set; }
         public AppointmentController AppointmentsController {get;set;}
-
+        NoteController NoteController = new NoteController();
+        private void SetNotes()
+        {
+            foreach (var appointment in Appointments)
+            {
+                appointment.Notes = NoteController.GetNotesForAppointment(appointment.AppointmentId);
+            }
+        }
         public ICommand DeleteAppointment
         {
             get
@@ -37,9 +44,7 @@ namespace DentistApp.UI.ViewModels
                 {
                     if (!ShouldDelete()) return;
                     AppointmentsController.Delete(AppointmentsController.List((int)o).First());
-                    var apps = AppointmentsController.List(0, false, DateTime.Now.Date, DateTime.Now.AddDays(14));
-                    Appointments = new ObservableCollection<Appointment>(apps.OrderByDescending(d => d.StartTime));
-                    RaisePropertyChanged("Appointments");
+                    _items = Items;
                 },
                 (object o) =>
                 {
@@ -67,9 +72,7 @@ namespace DentistApp.UI.ViewModels
                     };
 
                     editWindow.ShowDialog();
-                    var apps = AppointmentsController.List(0, false, DateTime.Now.Date, DateTime.Now.AddDays(14));
-                    Appointments = new ObservableCollection<Appointment>(apps.OrderByDescending(d => d.StartTime));
-                    RaisePropertyChanged("Appointments");
+                    _items = Items;
                 },
                 (object o) =>
                 {
@@ -92,15 +95,13 @@ namespace DentistApp.UI.ViewModels
         {
             get
             {
-                if (_items == null)
-                {
-                    AppointmentsController = new AppointmentController();
+                 AppointmentsController = new AppointmentController();
                     var apps = AppointmentsController.List(0, false, DateTime.Now.Date, DateTime.Now.AddDays(14));
                     Appointments = new ObservableCollection<Appointment>(apps.OrderByDescending(d=>d.StartTime));
+                    SetNotes();
                     RaisePropertyChanged("Appointments");
                     _items = System.Windows.Data.CollectionViewSource.GetDefaultView(apps.ToList<Appointment>());
                     _items.GroupDescriptions.Add(new PropertyGroupDescription("StartTime"));
-                }
 
                 return _items;
             }
@@ -108,6 +109,39 @@ namespace DentistApp.UI.ViewModels
 
         
         #endregion
+        Window noteWindow;
+        public ICommand CreateNote
+        {
+            get
+            {
+                return new DelegateCommand((object o) =>
+                {
+                    var note = new Note { AppointmentId = (int)o };
+                    var vm = new CreateNoteUserControl(new NoteViewModel(note));
+                    vm.RaiseClosed += new EventHandler(vm_RaisedClosed);
+                    noteWindow = new Window
+                    {
+                        Title = "New Note",
+                        Content = vm,
+                        SizeToContent = SizeToContent.WidthAndHeight,
+                        ResizeMode = ResizeMode.NoResize
+                    };
+
+                    noteWindow.ShowDialog();
+                    _items = Items;
+                },
+                (object o) =>
+                {
+                    return true;
+                });
+            }
+        }
+
+        void vm_RaisedClosed(object sender, EventArgs e)
+        {
+            if (noteWindow != null)
+                noteWindow.Close();
+        }
 
         IUnityContainer _container { get; set; }
         IEventAggregator _eventAggregator { get; set; }

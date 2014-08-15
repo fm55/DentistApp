@@ -79,21 +79,27 @@
                                 <TextBlock Height="23" Width="200" HorizontalAlignment="Left"   Text="Country" VerticalAlignment="Top" />
                                 <TextBox Height="23" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top" Text="{Binding Path=SelectedPatient.Country}" />
 
+                                <TextBlock Height="23" Width="200" HorizontalAlignment="Left"   Text="Manually Override Total" VerticalAlignment="Top" />
+                                <TextBox Height="23" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top" Text="{Binding Path=SelectedPatient.OverrideTotalAmount}" />
+                                
                                 <TextBlock Height="23" Width="200" HorizontalAlignment="Left"   Text="Amount To Pay" VerticalAlignment="Top" />
                                 <TextBlock Height="23" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top" Text="{Binding AmountToPay}" />
 
                                 <TextBlock Height="23" Width="200" HorizontalAlignment="Left"   Text="Amount Paid" VerticalAlignment="Top" />
                                 <TextBlock Height="23" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top" Text="{Binding AmountPaid}" />
+                                
+                                
                             </UniformGrid>
 
 
-                            <Expander ExpandDirection="Down" IsExpanded="False" Header="Notes"  IsEnabled="{Binding IsExistingPatient}">
+                            <Expander ExpandDirection="Down" IsExpanded="False" Header="Notes"  Visibility="{Binding IsExistingPatient}">
                                 <StackPanel Orientation="Vertical">
-                                    <Button Command="{Binding CreateNoteForPatient}" CommandParameter="{Binding Path=SelectedPatient.PatientId}">Add Note</Button>
-                                    <ItemsControl x:Name="stackPatientNotes" ItemsSource="{Binding PatientNotes}" HorizontalAlignment="Left" Margin="0,8,0,0" VerticalAlignment="Top"
+                                    <Button Command="{Binding CreateNoteForPatient}" CommandParameter="{Binding Path=SelectedPatient.PatientId}" Width="100">Add Note</Button>
+                                    <ItemsControl VirtualizingStackPanel.IsVirtualizing="True" ScrollViewer.CanContentScroll="True" x:Name="stackPatientNotes" ItemsSource="{Binding PatientNotes}" HorizontalAlignment="Left" Margin="0,8,0,0" VerticalAlignment="Top"
                                           ItemTemplate="{StaticResource NoteItemTemplate}"                 
                                           ItemsPanel="{StaticResource NoteItemsPanelTemplate}"/>
                                     </StackPanel>
+                                
                             </Expander>
                         </StackPanel>
 
@@ -104,7 +110,7 @@
 
 
             </TabItem>
-            <TabItem Header="Teeth"  IsEnabled="{Binding IsExistingPatient}">
+            <TabItem Header="Teeth"  Visibility="{Binding IsExistingPatient}">
 
                 <Grid>
                     <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible">
@@ -114,10 +120,10 @@
 
 
             </TabItem>
-            <TabItem Header="Appointments"  IsEnabled="{Binding IsExistingPatient}">
+            <TabItem Header="Appointments"  Visibility="{Binding IsExistingPatient}">
                 <Grid>
 
-                    <StackPanel Orientation="Vertical" Width="Auto"
+                    <StackPanel Orientation="Vertical" 
               HorizontalAlignment="Left"   >
                         <StackPanel Orientation="Horizontal">
                             <Button Command="{Binding Path=CreateAppointment}" DockPanel.Dock="Top" Width="186">Add Appointment</Button>
@@ -132,22 +138,18 @@
                                 <CheckBox  IsChecked="{Binding OnlyNotFullyPaid}"  Content="Only Unpaid"/>
                             </StackPanel>
                         </Border>
-                        <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible">
-
-                            <StackPanel Orientation="Horizontal"
-              HorizontalAlignment="Left"
-              >
-
-                                <ItemsControl x:Name="stackPatientAppointments" ItemsSource="{Binding Path=PatientAppointments}" HorizontalAlignment="Left" Margin="0,8,0,0" VerticalAlignment="Top"
+                        <ScrollViewer  Height="500"  ScrollViewer.HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" >
+                            <WrapPanel Orientation="Horizontal" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Visible">
+                                <ItemsControl VirtualizingStackPanel.IsVirtualizing="True" ScrollViewer.CanContentScroll="True" x:Name="stackPatientAppointments" ItemsSource="{Binding Path=PatientAppointments}" HorizontalAlignment="Left" Margin="0,8,0,0" VerticalAlignment="Top"
                           ItemTemplate="{StaticResource AppointmentItemTemplate}"                 
                           ItemsPanel="{StaticResource AppointmentItemsPanelTemplate}"/>
-                            </StackPanel>
+                            </WrapPanel>
                         </ScrollViewer>
                     </StackPanel>
                 </Grid>
 
             </TabItem>
-            <TabItem Header="Operations" IsEnabled="{Binding IsExistingPatient}">
+            <TabItem Header="Operations" Visibility="{Binding IsExistingPatient}">
                 <Grid>
 
 

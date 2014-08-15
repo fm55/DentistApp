@@ -162,16 +162,13 @@ namespace DentistApp.UI.ViewModels
         {
             get
             {
-                if (_items == null)
-                {
-                    AppointmentsController = new AppointmentController();
+               AppointmentsController = new AppointmentController();
                     var apps = AppointmentsController.List(0, OnlyNotFullyPaid, Start, End);
                     Appointments = new ObservableCollection<Appointment>(apps.OrderByDescending(d=>d.StartTime));
                     SetNotes();
                     RaisePropertyChanged("Appointments");
                     _items = System.Windows.Data.CollectionViewSource.GetDefaultView(apps.ToList<Appointment>());
                     _items.GroupDescriptions.Add(new PropertyGroupDescription("StartTime"));
-                }
 
                 return _items;
             }
@@ -273,8 +270,7 @@ namespace DentistApp.UI.ViewModels
                     if (!ShouldDelete()) return;
                     var note = o as Note;
                     NoteController.Delete(note);
-                    SetNotes();
-                    RaisePropertyChanged("Notes");
+                    _items = Items;
                 });
             }
         }

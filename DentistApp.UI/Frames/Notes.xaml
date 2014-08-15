@@ -31,7 +31,7 @@
             </Border>
             <ScrollViewer Height="500"  ScrollViewer.HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" >
                 
-                <ItemsControl  x:Name="stackNotes" ItemsSource="{Binding Path=Notes}" HorizontalAlignment="Left" Margin="0,8,0,0" VerticalAlignment="Top"
+                <ItemsControl VirtualizingStackPanel.IsVirtualizing="True" ScrollViewer.CanContentScroll="True"  x:Name="stackNotes" ItemsSource="{Binding Path=Notes}" HorizontalAlignment="Left" Margin="0,8,0,0" VerticalAlignment="Top"
                           ItemTemplate="{StaticResource NoteItemTemplate}"                 
                           ItemsPanel="{StaticResource NoteItemsPanelTemplate}"/>
             </ScrollViewer>

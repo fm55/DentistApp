@@ -30,7 +30,7 @@ namespace DentistApp.UI.ViewModels
             RaisePropertyChanged("ProgressVisibility");
             _eventAggregator = eventAggregator;
             SubscribeToEvents();
-            IsExistingPatient = false;
+            IsExistingPatient = "Hidden";
             RaisePropertyChanged("IsExistingPatient");
             _eventAggregator.GetEvent<ReloadPatientsEvent>().Publish(true);
             this.NotificationToPatientDelete = new GenericInteractionRequest<Patient>();
@@ -49,7 +49,7 @@ namespace DentistApp.UI.ViewModels
 
         #region Properties
         public GenericInteractionRequest<Patient> NotificationToPatientDelete { get; private set; }
-        public Boolean IsExistingPatient { get; set; }
+        public string IsExistingPatient { get; set; }
         private IEventAggregator _eventAggregator;
         public ObservableCollection<Appointment> PatientAppointments { get; set; }
         public ObservableCollection<Note> PatientNotes { get; set; }
@@ -153,7 +153,7 @@ namespace DentistApp.UI.ViewModels
         private void addPatient(object context)
         {
             SelectedPatient = new Patient();
-            IsExistingPatient = false;
+            IsExistingPatient = "Hidden";
             RaisePropertyChanged("IsExistingPatient");
             RaisePropertyChanged("SelectedPatient");
             Reset();
@@ -273,6 +273,7 @@ namespace DentistApp.UI.ViewModels
                 appointment.Notes = NoteController.GetNotesForAppointment(appointment.AppointmentId);
             }
         }
+
         void viewModel_RaisedClosed(object sender, EventArgs e)
         {
             if (window!=null)
@@ -432,7 +433,7 @@ namespace DentistApp.UI.ViewModels
             _eventAggregator.GetEvent<SelectedPatientItemEvent>().Subscribe((patient) =>
             {
                 SelectedPatient = patient;
-                IsExistingPatient = true;
+                IsExistingPatient = "Visible";
                 RaisePropertyChanged("IsExistingPatient");
                 SelectedTabNumber = 0;
                 RaisePropertyChanged("SelectedTabNumber");

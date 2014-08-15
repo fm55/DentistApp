@@ -22,10 +22,12 @@ namespace DentistApp.UI.Frames
     /// </summary>
     public partial class HomePage : Page
     {
+        public NotesViewModel MethodDataContext{get;set;}
         public HomePage(IUnityContainer unityContainer, IEventAggregator eventAggregator)
         {
             InitializeComponent();
             this.DataContext = new HomeViewModel(unityContainer, eventAggregator);
+            MethodDataContext = new NotesViewModel();
         }
     }
 }

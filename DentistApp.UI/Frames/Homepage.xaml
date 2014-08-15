@@ -36,7 +36,7 @@
                         <Label Content="Next 14 Days Appointments" DockPanel.Dock="Top" Height="35" FontSize="16" FontWeight="Bold" />
 
 
-                        <ItemsControl x:Name="stackPatientAppointments" ItemsSource="{Binding Path=Appointments}" HorizontalAlignment="Left"  VerticalAlignment="Top"
+                        <ItemsControl VirtualizingStackPanel.IsVirtualizing="True" ScrollViewer.CanContentScroll="True" x:Name="stackPatientAppointments" ItemsSource="{Binding Path=Appointments}" HorizontalAlignment="Left"  VerticalAlignment="Top"
                               ItemTemplate="{StaticResource AppointmentItemTemplate}"                 
                               ItemsPanel="{StaticResource AppointmentItemsPanelTemplate}"/>
 

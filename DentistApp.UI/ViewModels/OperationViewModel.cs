@@ -69,7 +69,7 @@ namespace DentistApp.UI.ViewModels
         public void UpdateOperation(object o)
         {
             var operation = o as Operation;
-            if (string.IsNullOrWhiteSpace(operation.Description)) { MessageBox.Show("Please enter a description, click outside and then press Save again."); return; }
+            if (operation == null || string.IsNullOrWhiteSpace(operation.Description)) { MessageBox.Show("Please enter a description, click outside and then press Save again."); return; }
             OperationController.SaveOperation(operation);
             LoadOperations(null);
         }
