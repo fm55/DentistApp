@@ -16,6 +16,7 @@ using System.Windows.Controls;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Prism.Events;
 using DentistApp.UI.Events;
+using Microsoft.Practices.ServiceLocation;
 
 namespace DentistApp.UI.ViewModels
 {
@@ -133,6 +134,8 @@ namespace DentistApp.UI.ViewModels
                 if (!Validate(note)) return;
                 NoteController.SaveNote(note);
                 IsReadOnly = true; RaisePropertyChanged("IsReadOnly");
+                var eventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
+                eventAggregator.GetEvent<RefreshAppointmentsEvent>().Publish(true);
                 if (RaiseClosed != null)
                     RaiseClosed(null, null);
             }
@@ -147,6 +150,8 @@ namespace DentistApp.UI.ViewModels
             NoteController.Delete(note);
             Notes = Items;
             RaisePropertyChanged("Notes");
+            var eventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
+            eventAggregator.GetEvent<RefreshAppointmentsEvent>().Publish(true);
         }); 
         } }
 

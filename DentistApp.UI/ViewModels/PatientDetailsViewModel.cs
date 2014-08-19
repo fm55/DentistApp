@@ -17,6 +17,7 @@ using Microsoft.Practices.Prism.Events;
 using DentistApp.UI.Events;
 using Microsoft.Practices.Prism.Interactivity.InteractionRequest;
 using DentistApp.UI.Requests;
+using Microsoft.Practices.ServiceLocation;
 
 namespace DentistApp.UI.ViewModels
 {
@@ -45,6 +46,15 @@ namespace DentistApp.UI.ViewModels
             RaisePropertyChanged("Start");
             RaisePropertyChanged("End");
             Reset();
+            eventAggregator.GetEvent<RefreshAppointmentsEvent>().Subscribe(UpdateAppointments);
+        }
+
+        public void UpdateAppointments(bool value)
+        {
+            var apps = AppointmentController.GetAppointmentsOfPatient(SelectedPatient.PatientId);
+            PatientAppointments = new ObservableCollection<Appointment>(apps.OrderByDescending(d => d.StartTime));
+            SetNotes();
+            RaisePropertyChanged("PatientAppointments");
         }
 
         #region Properties

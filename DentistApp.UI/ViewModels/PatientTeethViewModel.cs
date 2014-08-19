@@ -27,7 +27,18 @@ namespace DentistApp.UI.ViewModels
                 SelectedPatient = patient;
                 RaisePropertyChanged("IsExistingPatient");
             });
+            _eventAggregator.GetEvent<RefreshAppointmentsEvent>().Subscribe(UpdateAppointments);
         }
+
+        private void UpdateAppointments(bool value)
+        {
+            if (SelectedTooth == null) return;
+            var apps = AppointmentsController.GetAppointmentsOfPatientAndTooth(SelectedPatient.PatientId, SelectedTooth.ToothId);
+            Appointments = new ObservableCollection<Appointment>(apps.OrderByDescending(d => d.StartTime));
+            SetNotes();
+            RaisePropertyChanged("Appointments");
+        }
+
         public ICommand Delete
         {
             get

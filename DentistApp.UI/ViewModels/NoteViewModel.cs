@@ -10,6 +10,8 @@ using DentistApp.BL;
 using System.Windows.Media;
 using DentistApp.UI.Commands;
 using System.Windows;
+using Microsoft.Practices.ServiceLocation;
+using DentistApp.UI.Events;
 
 namespace DentistApp.UI.ViewModels
 {
@@ -54,6 +56,8 @@ namespace DentistApp.UI.ViewModels
                 if (!Validate(new Note { Description = this.Description })) return;
                 NoteController.SaveNote(new Note { NoteId = this.NoteId, Description = this.Description }, this.PatientId, this.OperationId, this.ToothId, this.AppointmentId);
                 IsReadOnly = true; RaisePropertyChanged("IsReadOnly");
+                var eventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
+                eventAggregator.GetEvent<RefreshAppointmentsEvent>().Publish(true);
                 if (RaiseClosed != null)
                     RaiseClosed(null, null);
             }
@@ -61,11 +65,22 @@ namespace DentistApp.UI.ViewModels
             }
         }
 
-        public ICommand Delete { get { return new DelegateCommand((object o) =>{
+        public ICommand Delete
+        {
+            get
+            {
+                return new DelegateCommand((object o) =>
+                {
+                    if (!ShouldDelete()) return; 
+                    NoteController.Delete(SelectedNote); 
+                    var eventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
+                    eventAggregator.GetEvent<RefreshAppointmentsEvent>().Publish(true);
+                });
 
 
-            if (!ShouldDelete())return; NoteController.Delete(SelectedNote); }); 
-        } }
+
+            }
+        }
 
 
         public NoteViewModel()

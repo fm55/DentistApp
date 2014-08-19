@@ -12,6 +12,9 @@ using DentistApp.Model;
 using System.ComponentModel;
 using System.Windows.Data;
 using DentistApp.UI.UserControls;
+using Microsoft.Practices.Prism.Events;
+using DentistApp.UI.Events;
+using Microsoft.Practices.ServiceLocation;
 
 
 namespace DentistApp.UI.ViewModels
@@ -239,6 +242,13 @@ namespace DentistApp.UI.ViewModels
             RaisePropertyChanged("OnlyNotFullyPaid");
             RaisePropertyChanged("Start");
             RaisePropertyChanged("End");
+            var eventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
+            eventAggregator.GetEvent<RefreshAppointmentsEvent>().Subscribe(UpdateAppointments);
+        }
+
+        public void UpdateAppointments(bool value)
+        {
+            _items = Items;
         }
 
         public event EventHandler RaiseClosed;

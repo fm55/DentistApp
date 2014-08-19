@@ -157,6 +157,7 @@
     <Compile Include="Converters\Converters.cs" />
     <Compile Include="CustomControls\DentistDataGrid.cs" />
     <Compile Include="Events\ApplicationService.cs" />
+    <Compile Include="Events\RefreshAppointmentsEvent.cs" />
     <Compile Include="Events\ReloadPatientsEvent.cs" />
     <Compile Include="Events\SearchedPatientsEvent.cs" />
     <Compile Include="Events\SelectedMenuItemEvent.cs" />
