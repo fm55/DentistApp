@@ -4,10 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" d:DesignHeight="204" d:DesignWidth="255">
-    <Border x:Name="OuterBorder" Background="#C6F7F7B3" CornerRadius="35" BorderBrush="DarkGray" BorderThickness="2.5">
+    <Border x:Name="OuterBorder" Background="Yellow" BorderBrush="DarkGray" BorderThickness="2.5">
     <Grid>
             <StackPanel Orientation="Vertical">
-                <WrapPanel Margin="10" Orientation="Horizontal">
+                <WrapPanel Margin="10" Orientation="Horizontal" Height="30">
+                    <Image Source="/Resources/pin.png" VerticalAlignment="Center" Width="18" Height="25"/>
                     <Button FontWeight="Bold" Width="Auto" Background="#13000000" Name="SaveNote" BorderBrush="#00000000" CommandParameter="{Binding}" Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, 
                                               AncestorType={x:Type UserControl}}, Path=MethodDataContext.Save}">Save</Button>
                     <Button FontWeight="Bold" Width="Auto" Background="#13000000" Name="DeleteNote" BorderBrush="#00000000" CommandParameter="{Binding}" Command="{Binding  RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}},Path=MethodDataContext.Delete}">Delete</Button>

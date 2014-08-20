@@ -4,14 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" d:DesignHeight="204" d:DesignWidth="255">
-    <Border x:Name="OuterBorder" Background="#C6F7F7B3" CornerRadius="35" BorderBrush="DarkGray" BorderThickness="2.5">
+    <Border x:Name="OuterBorder" Background="Yellow" CornerRadius="35" BorderBrush="DarkGray" BorderThickness="2.5">
     <Grid>
             <StackPanel Orientation="Vertical">
                 <WrapPanel Margin="10" Orientation="Horizontal">
                     <Button FontWeight="Bold" Width="Auto" Background="#13000000" BorderBrush="#00000000" Command="{Binding Path=Save}" CommandParameter="{Binding}">Save</Button>
                 </WrapPanel>
                 <Label x:Name="txtCreatedAt" FontFamily="Calibri" FontStyle="Italic" FontWeight="Bold" Content="{Binding Path=DateCreated}" Height="30" />
-                <TextBox BorderBrush="Transparent" Background="#C6F7F7B3" Name="txtDescription" Text="{Binding Description}" FontFamily="Calibri" FontStyle="Italic" Height="124" >
+                <TextBox BorderBrush="Transparent" Background="Yellow" Name="txtDescription" Text="{Binding Description}" FontFamily="Calibri" FontStyle="Italic" Height="124" >
                 </TextBox>
             </StackPanel>
         </Grid>

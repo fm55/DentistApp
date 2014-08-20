@@ -88,7 +88,10 @@ namespace DentistApp.DAL.DAL
 
         public int Add(T item)
         {
-            if (item == null) return -1;
+            if (item == null)
+            {
+                throw new Exception("Cannot Add empty entity");
+            }
             using (var context = new DentistDbContext())
             {
                 dbSet = context.Set<T>();
@@ -109,7 +112,10 @@ namespace DentistApp.DAL.DAL
               
                 foreach (T item in items)
                 {
-                    if (item == null) return -1;
+                    if (item == null)
+                    {
+                        throw new Exception("Cannot Update empty entity");
+                    }
                     dbSet = context.Set<T>();
                     try
                     {

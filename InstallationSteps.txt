@@ -1,0 +1,21 @@
+For the first time set up:
+
+1. In DentistApp.DataLoader/bin/../ folder:
+Open DentistApp.DataLoader.exe.config file in Notepad and update the connection string:
+connectionString="Data Source=<SERVER NAME/INSTANCE>;Initial Catalog=<NEW DATABASE NAME>;Integrated Security=True"/>
+2.  Double click on DentistApp.DataLoader.exe file.
+3.  Enter 1 And Press Enter key.  This step will create Teeth records inside DentistApp.DataLoader/teeth.csv into a new database. 
+
+
+
+To run the application:
+1. In \DentistApp.UI\bin\Debug:
+Open DentistApp.UI.exe.config in Notepad and ensure connection string points to correct server and database.
+
+Open DentistApp.DataLoader.exe.config file in Notepad and update the connection string:
+connectionString="Data Source=<SERVER NAME/INSTANCE>;Initial Catalog=<DATABASE NAME>;Integrated Security=True"/>
+
+2.  Double click on DentistApp.UI.exe
+
+
+For troubleshooting, look in the Log.txt file.
