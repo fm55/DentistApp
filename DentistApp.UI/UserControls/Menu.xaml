@@ -5,8 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" >
     <Grid>
+        
         <Border CornerRadius="15" BorderBrush="Black" BorderThickness="5">
+            
             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                <StackPanel Orientation="Vertical" Background="SkyBlue" HorizontalAlignment="Left">
+                    <Image Source="/Resources/ambulance car.ico" Height="100"></Image>
+                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30" Text="Dentist Logo"></TextBlock>
+                </StackPanel>
                 <Button Width="200" Command="{Binding Navigate}" CommandParameter="Home" Content="Home" Background="White"/>
                 <Button Width="200" Command="{Binding Navigate}" CommandParameter="Patients" Content="Patients Management" Background="White"/>
                 <Button Command="{Binding Navigate}" Width="200" CommandParameter="Appointments" Content="Appointments Mangement" Background="White"/>

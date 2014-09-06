@@ -14,7 +14,7 @@
     <ScrollViewer VerticalScrollBarVisibility="Visible">
     <Grid DataContext="{Binding Source={StaticResource OperationsViewModel}}" Name="grid">
         <StackPanel>
-            <Button Content="Delete Operation" Width="100" Command="{Binding Path=DeleteOperationCommand}"/>
+            <!--<Button Content="Delete Operation" Width="100" Command="{Binding Path=DeleteOperationCommand}"/>-->
             
             
             <DataGrid ItemsSource="{Binding Operations, Mode=TwoWay}" CanUserAddRows="True"
