@@ -147,7 +147,7 @@ namespace DentistApp.BL
                 a.Teeth = TeethAppointmentRepository.GetList(t=>t.AppointmentId==a.AppointmentId).ToList();
                 a.Operation = OperationAppointmentRepository.GetList(t => t.AppointmentId == a.AppointmentId).ToList();
             }
-            return thisApp;
+            return thisApp.OrderByDescending(d=>d.StartTime);
 
         }
 

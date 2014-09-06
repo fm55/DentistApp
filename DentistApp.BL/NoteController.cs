@@ -53,9 +53,9 @@ namespace DentistApp.BL
         {
             if (NoteId == 0)
             {
-                return NoteRepository.GetAll();
+                return NoteRepository.GetAll().OrderByDescending(d => d.DateCreated);
             }
-            return NoteRepository.GetList(d => d.NoteId == NoteId);
+            return NoteRepository.GetList(d => d.NoteId == NoteId).OrderByDescending(d => d.DateCreated);
 
         }
 
@@ -112,41 +112,41 @@ namespace DentistApp.BL
 
         public List<Note> GetNotesForPatient(int patientId)
         {
-            return NoteRepository.GetList(d => d.PatientId == patientId).ToList();
+            return NoteRepository.GetList(d => d.PatientId == patientId).OrderByDescending(d => d.DateCreated).ToList();
         }
 
         public List<Note> GetNotesForPatientAndTooth(int patientId, int toothId)
         {
-            return NoteRepository.GetList(d => d.PatientId == patientId && d.ToothId == toothId).ToList();
+            return NoteRepository.GetList(d => d.PatientId == patientId && d.ToothId == toothId).OrderByDescending(d => d.DateCreated).ToList();
         }
 
 
         public List<Note> GetNotesForAppointment(int appointmentId)
         {
-            return NoteRepository.GetList(d => d.AppointmentId == appointmentId).ToList();
+            return NoteRepository.GetList(d => d.AppointmentId == appointmentId).OrderByDescending(d => d.DateCreated).ToList();
         }
 
         public List<Note> GetNotesForAppointmentAndOperation(int appointmentId, int operationId)
         {
-            return NoteRepository.GetList(d => d.AppointmentId == appointmentId && d.OperationId == operationId).ToList();
+            return NoteRepository.GetList(d => d.AppointmentId == appointmentId && d.OperationId == operationId).OrderByDescending(d => d.DateCreated).ToList();
         }
 
 
 
         public List<Note> GetNotesForOperation(int operationId)
         {
-            return NoteRepository.GetList(d => d.OperationId == operationId).ToList();
+            return NoteRepository.GetList(d => d.OperationId == operationId).OrderByDescending(d => d.DateCreated).ToList();
         }
 
 
         public List<Note> GetNotesForTooth(int toothId)
         {
-            return NoteRepository.GetList(d => d.ToothId == toothId).ToList(); ;
+            return NoteRepository.GetList(d => d.ToothId == toothId).OrderByDescending(d => d.DateCreated).ToList(); ;
         }
 
         public List<Note> GetNotesForSystem()
         {
-            return NoteRepository.GetList(d => d.AppointmentId == null && d.OperationId == null && d.PatientId == null && d.ToothId == null).ToList();
+            return NoteRepository.GetList(d => d.AppointmentId == null && d.OperationId == null && d.PatientId == null && d.ToothId == null).OrderByDescending(d => d.DateCreated).ToList();
         }
 
 

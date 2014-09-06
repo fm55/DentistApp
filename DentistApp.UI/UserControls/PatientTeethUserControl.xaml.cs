@@ -132,6 +132,8 @@ namespace DentistApp.UI.UserControls
                 AddBackgroundOfTooth(tooth);
                 
             }
+
+            
         }
 
         private void AddBackgroundOfTooth(Tooth tooth)

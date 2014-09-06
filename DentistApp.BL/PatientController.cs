@@ -51,7 +51,7 @@ namespace DentistApp.BL
         {
             var patients = PatientDAL.GetAll().ToList();
             var filteredPatients = patients.Where(b => (((string.IsNullOrEmpty(firstName) || b.FirstName.Contains(firstName)) || (string.IsNullOrEmpty(lastName) || b.LastName.Contains(lastName))))).ToList();
-            return filteredPatients;
+            return filteredPatients.OrderBy(d=>d.FirstName).ThenBy(d=>d.LastName).ToList<Patient>();
         }
         
         public List<Operation> GetOperationsOfPatient(int patientId)
