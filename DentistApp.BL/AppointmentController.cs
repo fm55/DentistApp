@@ -15,11 +15,12 @@ namespace DentistApp.BL
         public IGenericDataRepository<TeethAppointment> TeethAppointmentRepository { get; set; }
         public OperationController OperationController { get; set; }
         public ToothController ToothController { get; set; }
-
+        IGenericDataRepository<Patient> PatientRepository { get; set; }
         public AppointmentController()
         {
             AppointmentRepository = new GenericDataRepository<Appointment>();
             OperationAppointmentRepository = new GenericDataRepository<OperationAppointment>();
+            PatientRepository = new GenericDataRepository<Patient>();
             TeethAppointmentRepository = new GenericDataRepository<TeethAppointment>();
             OperationController = new OperationController();
             ToothController = new ToothController();
@@ -131,7 +132,14 @@ namespace DentistApp.BL
                     a.Teeth = TeethAppointmentRepository.GetList(t => t.AppointmentId == a.AppointmentId).ToList();
                     a.Operation = OperationAppointmentRepository.GetList(t => t.AppointmentId == a.AppointmentId).ToList();
                 }
-                return apps;
+                //for these appointments, ensure patient isn't deleted
+                foreach(var a in apps)
+                {
+                    a.Patient = PatientRepository.GetList(p=>p.PatientId == a.PatientId).FirstOrDefault();
+                }
+
+
+                return apps.Where(a => a.Patient != null);
             }
             var thisApp = AppointmentRepository.GetList(d => d.AppointmentId == AppointmentId);
             foreach (var a in thisApp)
