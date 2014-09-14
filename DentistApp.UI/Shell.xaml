@@ -12,7 +12,7 @@
         <ContentControl x:Name="ContentGrid" prism:RegionManager.RegionName="MainFrame"></ContentControl>
        
     </DockPanel>
-    <Window.Background>
+    <!--<Window.Background>
         <ImageBrush ImageSource="Resources/background.png"  Stretch="UniformToFill"/>
-    </Window.Background>
+    </Window.Background>-->
 </Window>

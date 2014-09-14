@@ -121,10 +121,8 @@
 
             </TabItem>
             <TabItem Header="Appointments"  Visibility="{Binding IsExistingPatient}">
-                <Grid >
-                    <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible">
-
-                    <StackPanel Orientation="Vertical" Height="500"  ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Visible" 
+                <Grid>
+                <StackPanel Orientation="Vertical" Width="Auto"
               HorizontalAlignment="Left"   >
                         <Border BorderThickness="2" CornerRadius="5" BorderBrush="Black">
                             <StackPanel Orientation="Horizontal">
@@ -137,15 +135,13 @@
                             <Button Command="{Binding Path=CreateAppointment}" DockPanel.Dock="Top" Width="186">Add Appointment</Button>
                         </StackPanel>
                         </Border>
-                    <Grid>
-                        <WrapPanel OverridesDefaultStyle="False" Orientation="Horizontal" HorizontalAlignment="Left">
+                            <ScrollViewer  Height="500"  ScrollViewer.HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" >
+
                                 <ItemsControl VirtualizingStackPanel.IsVirtualizing="True" ScrollViewer.CanContentScroll="True" x:Name="stackPatientAppointments" ItemsSource="{Binding Path=PatientAppointments}" HorizontalAlignment="Left" Margin="0,8,0,0" VerticalAlignment="Top"
                           ItemTemplate="{StaticResource AppointmentItemTemplate}"                 
                           ItemsPanel="{StaticResource AppointmentItemsPanelTemplate}"/>
-                            </WrapPanel>
-                    </Grid>
-                </StackPanel>
-                </ScrollViewer>
+                            </ScrollViewer>
+                            </StackPanel>
 
     </Grid>
 

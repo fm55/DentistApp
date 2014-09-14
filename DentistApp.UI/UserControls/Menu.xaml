@@ -13,11 +13,11 @@
                     <Image Source="/Resources/ambulance car.ico" Height="100"></Image>
                     <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30" Text="Dentist Logo"></TextBlock>
                 </StackPanel>
-                <Button Width="200" Command="{Binding Navigate}" CommandParameter="Home" Content="Home" Background="White"/>
-                <Button Width="200" Command="{Binding Navigate}" CommandParameter="Patients" Content="Patients Management" Background="White"/>
-                <Button Command="{Binding Navigate}" Width="200" CommandParameter="Appointments" Content="Appointments Mangement" Background="White"/>
-                <Button Command="{Binding Navigate}" Width="200" CommandParameter="Operations" Content="Operations Management" Background="White"/>
-                <Button Command="{Binding Navigate}" Width="200" CommandParameter="Notes" Content="System Notes" Background="White"/>
+                <Button BorderBrush="AliceBlue" BorderThickness="2" Width="200" Command="{Binding Navigate}" CommandParameter="Home" Content="Home" />
+                <Button Width="200" Command="{Binding Navigate}" CommandParameter="Patients" Content="Patients Management" />
+                <Button Command="{Binding Navigate}" Width="200" CommandParameter="Appointments" Content="Appointments Mangement" />
+                <Button Command="{Binding Navigate}" Width="200" CommandParameter="Operations" Content="Operations Management" />
+                <Button Command="{Binding Navigate}" Width="200" CommandParameter="Notes" Content="System Notes" />
             </StackPanel>
         </Border>
     </Grid>

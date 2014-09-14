@@ -34,7 +34,7 @@
                         Path=DataContext.EditAppointment}" CommandParameter="{Binding}">
                         </Button>
                     </StackPanel>
-                    <Label  Content="{Binding Path=StartTime, Converter={StaticResource DateConverter}}" FontFamily="Bookman Old Style" FontSize="52" FontWeight="Bold" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                    <Label  Content="{Binding Path=StartTime, Converter={StaticResource DateConverter}}" FontFamily="Bookman Old Style" FontSize="25" FontWeight="Bold" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
                     <WrapPanel Width="250" >
                         <Label Width="100"  Content="{Binding Path=Patient.FirstName}" FontFamily="Bookman Old Style" FontSize="22" FontWeight="Bold" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
                         <Label Width="100" Content="{Binding Path=Patient.LastName}" FontFamily="Bookman Old Style" FontSize="22" FontWeight="Bold" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
